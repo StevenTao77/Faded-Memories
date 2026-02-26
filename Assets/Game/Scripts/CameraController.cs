@@ -66,7 +66,7 @@ public class CameraController : MonoBehaviour
 
             // Clamp vertical rotation to prevent flipping
             currentY = Mathf.Clamp(currentY, pitchLimits.x, pitchLimits.y);
-        }
+        }   
 
          
 
