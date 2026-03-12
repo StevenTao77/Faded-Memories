@@ -1,0 +1,1 @@
+﻿{"inkVersion":21,"root":[[{"->":"start_node"},["done",{"#f":5,"#n":"g-0"}],null],"done",{"start_node":["^A carbin shows up. Looks like my house, if I do remember","\n",{"->":"rejection_node"},{"#f":1}],"rejection_node":["^.....","\n","end",{"#f":1}],"pass_node":["^You proceed forward into the dark corridor.","\n","end",{"#f":1}],"#f":1}],"listDefs":{}}

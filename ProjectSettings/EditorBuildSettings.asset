@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/MainMenu.unity
     guid: b9412286e3bfa344fb41cfc6971ca315
   - enabled: 1
-    path: Assets/Game/Scenes/Island1.unity
-    guid: 1a0d860cd12b96748b1a6190a696a439
+    path: Assets/Game/Scenes/Island.unity
+    guid: 929982ccacbff744486d217ad454b5ec
   - enabled: 1
     path: Assets/Game/Scenes/Cabin_inside.unity
     guid: 2d17b40ce14fd2a499f4edb0716252e5
