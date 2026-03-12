@@ -3,13 +3,13 @@ using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
 using System.Collections.Generic;
-using System.Collections; // NEEDED FOR COROUTINES
+using System.Collections;
 
 public class DialogueManager : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject dialoguePanel;
-    public TextAsset inkAsset;
+    // Removed: public TextAsset inkAsset; (Moved to DialogueTrigger)
     public TextMeshProUGUI dialogueText;
     public Transform choiceButtonContainer;
     public Button choiceButtonPrefab;
@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour
     public MonoBehaviour cameraScript;
 
     [Header("Typewriter Effect")]
-    public float typingSpeed = 0.02f; // Speed of the typing effect
+    public float typingSpeed = 0.02f;
 
     private Story currentStory;
     private Coroutine displayLineCoroutine;
@@ -29,9 +29,10 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
     }
 
-    public void StartDialogue()
+    // Modified to accept a TextAsset parameter
+    public void StartDialogue(TextAsset newInkAsset)
     {
-        currentStory = new Story(inkAsset.text);
+        currentStory = new Story(newInkAsset.text);
         dialoguePanel.SetActive(true);
 
         if (playerMovementScript != null) playerMovementScript.enabled = false;
@@ -53,28 +54,24 @@ public class DialogueManager : MonoBehaviour
             text += currentStory.Continue();
         }
 
-        // Stop the previous typing effect if it's still running
         if (displayLineCoroutine != null)
         {
             StopCoroutine(displayLineCoroutine);
         }
 
-        // Start typing the new text
         displayLineCoroutine = StartCoroutine(TypeSentence(text.Trim()));
     }
 
     private IEnumerator TypeSentence(string sentence)
     {
-        dialogueText.text = ""; // Clear current text
+        dialogueText.text = "";
 
-        // Type each character one by one
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        // Only display choices AFTER the text has finished typing
         DisplayChoices();
     }
 
