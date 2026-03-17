@@ -15,6 +15,7 @@ public class EquipmentManager : MonoBehaviour
 
     private void Start()
     {
+         
         foreach (EquipableItem item in allHandItems)
         {
             if (item.handModel != null)
@@ -22,10 +23,18 @@ public class EquipmentManager : MonoBehaviour
                 item.handModel.SetActive(false);
             }
         }
+
+         
+        if (InventoryManager.Instance != null && !string.IsNullOrEmpty(InventoryManager.Instance.currentlyEquippedItem))
+        {
+            string lastItem = InventoryManager.Instance.currentlyEquippedItem;
+            EquipByName(lastItem);
+        }
     }
 
     private void Update()
     {
+         
         if (Input.GetKeyDown(KeyCode.Alpha1)) TryEquipItem(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) TryEquipItem(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) TryEquipItem(2);
@@ -51,18 +60,26 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    private void EquipByName(string targetName)
+    public void EquipByName(string targetName)
     {
+        bool found = false;
         foreach (EquipableItem item in allHandItems)
         {
             if (item.itemName == targetName)
             {
                 item.handModel.SetActive(true);
+                found = true;
             }
             else
             {
                 item.handModel.SetActive(false);
             }
+        }
+
+         
+        if (found && InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.currentlyEquippedItem = targetName;
         }
     }
 
@@ -71,6 +88,12 @@ public class EquipmentManager : MonoBehaviour
         foreach (EquipableItem item in allHandItems)
         {
             item.handModel.SetActive(false);
+        }
+
+        
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.currentlyEquippedItem = "";
         }
     }
 }

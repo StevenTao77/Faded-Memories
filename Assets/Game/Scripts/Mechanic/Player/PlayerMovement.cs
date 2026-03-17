@@ -6,45 +6,40 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5.0f;
-    [SerializeField] private float sprintMultiplier = 2.0f; // New: Speed multiplier for sprinting
     [SerializeField] private float rotateSpeed = 10.0f;
-    [SerializeField] private float jumpForce = 7.0f;
+
+    [Header("Model Correction")]
+    [Tooltip("If the model lies down when X is 0, enter the X rotation that makes it stand up (e.g., -90 or 90)")]
+    [SerializeField] private float modelXOffset = -90f;
 
     [Header("References")]
     public CameraController camController;
 
     private Rigidbody rb;
     private Vector2 moveInput;
-    private bool jumpInput;
-    private bool isSprinting; // New: Track if shift is held
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        // Double check to ensure physics won't tip the capsule over
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void Update()
     {
         GetInput();
-        HandleRotation();
     }
 
     private void FixedUpdate()
     {
         Move();
-
-        if (jumpInput)
-        {
-            Jump();
-            jumpInput = false;
-        }
+        HandleRotation();
     }
 
     private void GetInput()
     {
         if (Keyboard.current == null) return;
 
-        // --- 1. Movement Input (WASD) ---
         float x = 0;
         float z = 0;
 
@@ -54,53 +49,28 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.sKey.isPressed) z = -1;
 
         moveInput = new Vector2(x, z).normalized;
-
-        // --- 2. Sprint Input (Left Shift) ---
-        // Check if the key is currently being held down
-        isSprinting = Keyboard.current.leftShiftKey.isPressed;
-
-        // --- 3. Jump Input (Space) ---
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && IsGrounded())
-        {
-            jumpInput = true;
-        }
     }
 
     private void Move()
     {
         Vector3 targetVelocity = Vector3.zero;
 
-        // Calculate the current speed based on sprinting state
-        float currentSpeed = isSprinting ? moveSpeed * sprintMultiplier : moveSpeed;
-
         if (camController != null && camController.currentMode == CameraController.CameraMode.FreeAngle)
         {
-            // FreeAngle (TPS) Logic
             Transform camTransform = Camera.main.transform;
-
             Vector3 camForward = Vector3.Scale(camTransform.forward, new Vector3(1, 0, 1)).normalized;
             Vector3 camRight = Vector3.Scale(camTransform.right, new Vector3(1, 0, 1)).normalized;
 
             Vector3 moveDir = camForward * moveInput.y + camRight * moveInput.x;
-
-            // Apply currentSpeed instead of moveSpeed
-            targetVelocity = moveDir * currentSpeed;
+            targetVelocity = moveDir * moveSpeed;
         }
         else
         {
-            // TopDown (LoL) Logic
-            targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * currentSpeed;
+            targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
         }
 
-        // Preserve gravity (Y velocity)
         targetVelocity.y = rb.linearVelocity.y;
-
         rb.linearVelocity = targetVelocity;
-    }
-
-    private void Jump()
-    {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     private void HandleRotation()
@@ -109,14 +79,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (lookDirection.magnitude > 0.1f)
         {
-            Quaternion toRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
-        }
-    }
+            Quaternion targetRot = Quaternion.LookRotation(lookDirection);
 
-    private bool IsGrounded()
-    {
-        float distToGround = GetComponent<Collider>().bounds.extents.y;
-        return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.1f);
+            // WE STOPPED READING eulerAngles! 
+            // Instead, we force the X rotation to be EXACTLY the offset you provided, Z to 0.
+            Quaternion finalRotation = Quaternion.Euler(modelXOffset, targetRot.eulerAngles.y, 0);
+
+            // Using rb.MoveRotation is safer for physics objects than modifying transform directly
+            rb.MoveRotation(Quaternion.Slerp(transform.rotation, finalRotation, rotateSpeed * Time.fixedDeltaTime));
+        }
     }
 }
