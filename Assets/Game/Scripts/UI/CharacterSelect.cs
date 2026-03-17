@@ -19,6 +19,12 @@ public class CharacterSelect : MonoBehaviour
 
         if (Input.GetKey(KeyCode.DownArrow))
         {
+            // indicator is visible when using keyboard
+            if (indicator != null)
+            {
+                indicator.gameObject.SetActive(true);
+            }
+
             if (moveTimer < moveDelay)
             {
                 if (indicatorPos < charBtn.Length - 1)
@@ -37,6 +43,12 @@ public class CharacterSelect : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.UpArrow))
         {
+            // indicator is visible when using keyboard
+            if (indicator != null)
+            {
+                indicator.gameObject.SetActive(true);
+            }
+
             if (moveTimer < moveDelay)
             {
                 if (indicatorPos > 0)
@@ -62,8 +74,22 @@ public class CharacterSelect : MonoBehaviour
         }
     }
 
-    public void HoverOnButton(int  btnPos)
+    public void HoverOnButton(int btnPos)
     {
         indicatorPos = btnPos;
+        if (indicator != null)
+        {
+            indicator.gameObject.SetActive(true);
+            indicator.localPosition = charBtn[indicatorPos].localPosition;
+        }
+    }
+
+    // hide the arrow when the mouse leaves
+    public void HoverOffButton()
+    {
+        if (indicator != null)
+        {
+            indicator.gameObject.SetActive(false);
+        }
     }
 }
