@@ -7473,8 +7473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsUI
   camController: {fileID: 1411952136}
-  viewDropdown: {fileID: 1927830943}
-  applyButton: {fileID: 1927830944}
+  viewDropdown: {fileID: 0}
+  applyButton: {fileID: 0}
   settingsPanel: {fileID: 1927830945}
 --- !u!114 &1547760713
 MonoBehaviour:
@@ -9272,15 +9272,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2081182376556036959, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.385
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2081182376556036959, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2081182376556036959, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.385
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2299593064128897910, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_Layer
@@ -9464,11 +9464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4566609909660458487, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.385
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4566609909660458487, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4628685469973464161, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_Layer
@@ -9504,7 +9504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6175740640179126747, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6352623460425070987, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_Layer
@@ -9564,7 +9564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8701013216311498483, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8706077063009958472, guid: d86c910ca9a842144aea17a263236e49, type: 3}
       propertyPath: m_Layer
@@ -9595,7 +9595,18 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3461306258435142359, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 8633250181462953047, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 4441163741152232101, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 4854916991638070808, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 7459983246608931456, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 50050315124235318, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 2394290183618314110, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 384487123477623392, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 2512265650186311267, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 510099543523081282, guid: d86c910ca9a842144aea17a263236e49, type: 3}
+    - {fileID: 9093131446161425960, guid: d86c910ca9a842144aea17a263236e49, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d86c910ca9a842144aea17a263236e49, type: 3}
@@ -9604,28 +9615,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4267060798498634973, guid: d86c910ca9a842144aea17a263236e49, type: 3}
   m_PrefabInstance: {fileID: 1927830941}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1927830943 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8525687419286399699, guid: d86c910ca9a842144aea17a263236e49, type: 3}
-  m_PrefabInstance: {fileID: 1927830941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_Dropdown
---- !u!114 &1927830944 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3590103391745304101, guid: d86c910ca9a842144aea17a263236e49, type: 3}
-  m_PrefabInstance: {fileID: 1927830941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1927830945 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1240054142755033931, guid: d86c910ca9a842144aea17a263236e49, type: 3}
