@@ -12,7 +12,7 @@ public class AmbienceZone : MonoBehaviour
         {
             Debug.Log("Missing name from" + gameObject);
         }
-        SoundFXManager.instance.Play(ambienceName, gameObject);
+        SoundFXManager.instance.Fadein(ambienceName, 1f, gameObject);
     }
     void Update()
     {
