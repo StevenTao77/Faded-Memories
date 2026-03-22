@@ -4,25 +4,18 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour
 {
     [Header("Narritive File")]
- 
     public TextAsset inkAsset;
 
     [Header("UI Settings (Optional)")]
-    
     public GameObject interactPrompt;
 
     private bool playerInRange = false;
-    private DialogueManager dialogueManager;
+
+    // We no longer need to find the DialogueManager in Start.
+    // We will just call DialogueManager.Instance when needed!
 
     private void Start()
     {
-        dialogueManager = FindFirstObjectByType<DialogueManager>();
-
-        if (dialogueManager == null)
-        {
-            Debug.LogError("DialogueManager is missing from the scene!");
-        }
-
         GetComponent<Collider>().isTrigger = true;
 
         if (interactPrompt != null)
@@ -35,10 +28,19 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.G))
         {
-            if (dialogueManager != null && !dialogueManager.dialoguePanel.activeInHierarchy && inkAsset != null)
+            // Make sure the DialogueManager and UIManager exist
+            if (DialogueManager.Instance != null && UIManager.Instance != null)
             {
-                if (interactPrompt != null) interactPrompt.SetActive(false);
-                dialogueManager.StartDialogue(inkAsset);
+                // Check if the dialogue panel in UIManager is NOT active, and we have an ink file
+                if (UIManager.Instance.dialoguePanel != null &&
+                    !UIManager.Instance.dialoguePanel.activeInHierarchy &&
+                    inkAsset != null)
+                {
+                    if (interactPrompt != null) interactPrompt.SetActive(false);
+
+                    // Tell the DialogueManager to start the story
+                    DialogueManager.Instance.StartDialogue(inkAsset);
+                }
             }
         }
     }
@@ -49,7 +51,10 @@ public class DialogueTrigger : MonoBehaviour
         {
             playerInRange = true;
 
-            if (interactPrompt != null && !dialogueManager.dialoguePanel.activeInHierarchy)
+            // Only show prompt if the dialogue panel is NOT currently open
+            if (interactPrompt != null && UIManager.Instance != null &&
+                UIManager.Instance.dialoguePanel != null &&
+                !UIManager.Instance.dialoguePanel.activeInHierarchy)
             {
                 interactPrompt.SetActive(true);
             }
@@ -105,12 +110,9 @@ public class DialogueTrigger : MonoBehaviour
             );
 
             // THE MAGIC: Align the BOTTOM of the collider to the BOTTOM of the object
-            // Calculate how far the object's origin is from its "feet". 
-            // Handle negative if origin is below feet, positive if above (common).
             float offset_ToFeet = transform.parent.position.y - parentBounds.min.y;
 
             // Position the prefab so its generated collider's bottom edge is at parent's feet.
-            // Formula: Required_Y_Pos = GeneratedHeight_Y / 2 - Offset_Origin_To_Feet
             float newLocal_Y_Pos = (totalGeneratedHeight_Y / 2.0f) - offset_ToFeet;
 
             // Divide by parent's local scale to ensure it is in local units

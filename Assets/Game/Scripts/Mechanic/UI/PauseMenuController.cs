@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PauseMenuController : MonoBehaviour
 {
-    // Drag your "Option/setting" GameObject here in the Inspector
-    public GameObject settingsPanel;
+    // The settingsPanel variable is completely DELETED!
+    // No more dragging needed in the Inspector.
 
     private bool isPaused = false;
 
@@ -25,13 +25,13 @@ public class PauseMenuController : MonoBehaviour
 
     public void PauseGame()
     {
-        // Show the settings panel
-        settingsPanel.SetActive(true);
+        // 1. Tell the UIManager to show the settings panel
+        UIManager.Instance.ToggleSettingsPanel(true);
 
-        // Freeze time (game stops moving)
+        // 2. Freeze time (game stops moving)
         Time.timeScale = 0f;
 
-        // Unlock the cursor so you can click buttons
+        // 3. Unlock the cursor so you can click buttons
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -40,14 +40,13 @@ public class PauseMenuController : MonoBehaviour
 
     public void ResumeGame()
     {
-        // Hide the settings panel
-        settingsPanel.SetActive(false);
+        // 1. Tell the UIManager to hide the settings panel
+        UIManager.Instance.ToggleSettingsPanel(false);
 
-        // Unfreeze time
+        // 2. Unfreeze time
         Time.timeScale = 1f;
 
-        // Lock cursor again (if your game is an FPS/TPS)
-        // If your game is a point-and-click game, remove the next two lines
+        // 3. Lock cursor again
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 

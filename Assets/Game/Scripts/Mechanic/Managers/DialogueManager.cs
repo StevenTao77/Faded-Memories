@@ -7,13 +7,9 @@ using System.Collections;
 
 public class DialogueManager : MonoBehaviour
 {
+    // The DialogueManager remains a Singleton for logic calls, 
+    // but it no longer stores ANY direct UI references!
     public static DialogueManager Instance;
-
-    [Header("UI References")]
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI dialogueText;
-    public Transform choiceButtonContainer;
-    public Button choiceButtonPrefab;
 
     [Header("Typewriter Effect")]
     public float typingSpeed = 0.02f;
@@ -23,42 +19,26 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        // 1. Singleton pattern and protect this manager
+        // 1. Simplified Singleton pattern
+        // We removed the massive Canvas protection code because the UI is now safely handled 
+        // by the Island_UI scene and the UIManager.
         if (Instance == null)
         {
             Instance = this;
+            // Optional: Keep it alive if you change scenes, but usually handled by additive loading now.
             DontDestroyOnLoad(gameObject);
-
-            // 2. CRITICAL: Protect the Dialogue Canvas from being destroyed on scene load
-            if (dialoguePanel != null)
-            {
-                Canvas parentCanvas = dialoguePanel.GetComponentInParent<Canvas>();
-                if (parentCanvas != null)
-                {
-                    DontDestroyOnLoad(parentCanvas.gameObject);
-                }
-            }
         }
         else
         {
-            if (dialoguePanel != null)
-            {
-                Canvas parentCanvas = dialoguePanel.GetComponentInParent<Canvas>();
-                if (parentCanvas != null)
-                {
-                    Destroy(parentCanvas.gameObject);
-                }
-            }
             Destroy(gameObject);
-            return;
         }
     }
 
     private void Start()
     {
-        if (dialoguePanel != null)
+        if (UIManager.Instance != null)
         {
-            dialoguePanel.SetActive(false);
+            UIManager.Instance.ToggleDialoguePanel(false);
         }
     }
 
@@ -66,9 +46,9 @@ public class DialogueManager : MonoBehaviour
     {
         currentStory = new Story(newInkAsset.text);
 
-        if (dialoguePanel != null)
+        if (UIManager.Instance != null)
         {
-            dialoguePanel.SetActive(true);
+            UIManager.Instance.ToggleDialoguePanel(true);
         }
 
         // Lock player via dynamic search
@@ -100,12 +80,15 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator TypeSentence(string sentence)
     {
-        dialogueText.text = "";
-
-        foreach (char letter in sentence.ToCharArray())
+        if (UIManager.Instance != null && UIManager.Instance.dialogueText != null)
         {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+            UIManager.Instance.dialogueText.text = "";
+
+            foreach (char letter in sentence.ToCharArray())
+            {
+                UIManager.Instance.dialogueText.text += letter;
+                yield return new WaitForSeconds(typingSpeed);
+            }
         }
 
         DisplayChoices();
@@ -113,10 +96,17 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices()
     {
+        if (UIManager.Instance == null) return;
+
+        Transform container = UIManager.Instance.choiceButtonContainer;
+        GameObject prefab = UIManager.Instance.choiceButtonPrefab;
+
         if (currentStory.currentChoices.Count == 0)
         {
-            Button button = Instantiate(choiceButtonPrefab, choiceButtonContainer);
-            TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
+            GameObject btnObj = Instantiate(prefab, container);
+            Button button = btnObj.GetComponent<Button>();
+            TextMeshProUGUI buttonText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+
             buttonText.text = "End Dialogue";
             button.onClick.AddListener(() => EndDialogue());
             return;
@@ -124,8 +114,10 @@ public class DialogueManager : MonoBehaviour
 
         foreach (Choice choice in currentStory.currentChoices)
         {
-            Button button = Instantiate(choiceButtonPrefab, choiceButtonContainer);
-            TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
+            GameObject btnObj = Instantiate(prefab, container);
+            Button button = btnObj.GetComponent<Button>();
+            TextMeshProUGUI buttonText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+
             buttonText.text = choice.text;
             button.onClick.AddListener(() => OnClickChoice(choice));
         }
@@ -133,7 +125,9 @@ public class DialogueManager : MonoBehaviour
 
     private void ClearUI()
     {
-        foreach (Transform child in choiceButtonContainer)
+        if (UIManager.Instance == null || UIManager.Instance.choiceButtonContainer == null) return;
+
+        foreach (Transform child in UIManager.Instance.choiceButtonContainer)
         {
             Destroy(child.gameObject);
         }
@@ -147,9 +141,9 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        if (dialoguePanel != null)
+        if (UIManager.Instance != null)
         {
-            dialoguePanel.SetActive(false);
+            UIManager.Instance.ToggleDialoguePanel(false);
         }
 
         // Unlock player
@@ -159,7 +153,7 @@ public class DialogueManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // 3. Dynamically find the Player and Camera in the current scene
+    // 3. Dynamically find the Player and Camera in the current scene (Unchanged)
     private void SetPlayerControl(bool canMove)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -171,7 +165,6 @@ public class DialogueManager : MonoBehaviour
 
         if (Camera.main != null)
         {
-            // Tries to find either of your camera scripts
             MonoBehaviour camScript = Camera.main.GetComponent("CameraController") as MonoBehaviour;
             if (camScript == null)
             {

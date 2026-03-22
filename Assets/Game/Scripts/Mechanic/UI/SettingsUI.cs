@@ -1,40 +1,45 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class SettingsUI : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Mechanic References")]
     public CameraController camController;
-    public TMP_Dropdown viewDropdown;
-    public Button applyButton;
-    public GameObject settingsPanel;
 
     void Start()
     {
-        applyButton.onClick.AddListener(OnApply);
+        // Tell the apply button inside the UIManager to run the OnApply method
+        if (UIManager.Instance != null && UIManager.Instance.applyButton != null)
+        {
+            UIManager.Instance.applyButton.onClick.AddListener(OnApply);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager or Apply Button is not set up correctly!");
+        }
     }
 
     void OnApply()
     {
-        // Get selection and update Camera Mode (0 = TopDown, 1 = FreeAngle)
-        int value = viewDropdown.value;
+        // 1. Get the dropdown value directly from the UIManager
+        int value = UIManager.Instance.viewDropdown.value;
+
+        // 2. Update Camera Mode
         camController.SetMode(value);
 
-        // Resume game flow and close the menu
-        settingsPanel.SetActive(false);
+        // 3. Tell the UIManager to close the settings panel
+        UIManager.Instance.ToggleSettingsPanel(false);
+
+        // 4. Resume game flow
         Time.timeScale = 1f;
 
-        // Handle Cursor State based on mode
+        // 5. Handle Cursor State based on mode
         if (value == 1)
         {
-            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         else
         {
-           
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
