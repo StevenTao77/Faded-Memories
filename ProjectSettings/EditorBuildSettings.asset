@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Island.unity
     guid: 929982ccacbff744486d217ad454b5ec
   - enabled: 1
-    path: Assets/Game/Scenes/Cabin_inside.unity
+    path: Assets/Game/Scenes/Cabin_inside_mechanic.unity
     guid: 2d17b40ce14fd2a499f4edb0716252e5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
