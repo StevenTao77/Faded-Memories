@@ -1,0 +1,92 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerMovement : MonoBehaviour
+{
+    [Header("Movement Settings")]
+    [SerializeField] private float moveSpeed = 5.0f;
+    [SerializeField] private float rotateSpeed = 10.0f;
+
+    [Header("Model Correction")]
+    [Tooltip("If the model lies down when X is 0, enter the X rotation that makes it stand up (e.g., -90 or 90)")]
+    [SerializeField] private float modelXOffset = -90f;
+
+    [Header("References")]
+    public CameraController camController;
+
+    private Rigidbody rb;
+    private Vector2 moveInput;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        // Double check to ensure physics won't tip the capsule over
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+    }
+
+    private void Update()
+    {
+        GetInput();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        HandleRotation();
+    }
+
+    private void GetInput()
+    {
+        if (Keyboard.current == null) return;
+
+        float x = 0;
+        float z = 0;
+
+        if (Keyboard.current.dKey.isPressed) x = 1;
+        if (Keyboard.current.aKey.isPressed) x = -1;
+        if (Keyboard.current.wKey.isPressed) z = 1;
+        if (Keyboard.current.sKey.isPressed) z = -1;
+
+        moveInput = new Vector2(x, z).normalized;
+    }
+
+    private void Move()
+    {
+        Vector3 targetVelocity = Vector3.zero;
+
+        if (camController != null && camController.currentMode == CameraController.CameraMode.FreeAngle)
+        {
+            Transform camTransform = Camera.main.transform;
+            Vector3 camForward = Vector3.Scale(camTransform.forward, new Vector3(1, 0, 1)).normalized;
+            Vector3 camRight = Vector3.Scale(camTransform.right, new Vector3(1, 0, 1)).normalized;
+
+            Vector3 moveDir = camForward * moveInput.y + camRight * moveInput.x;
+            targetVelocity = moveDir * moveSpeed;
+        }
+        else
+        {
+            targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
+        }
+
+        targetVelocity.y = rb.linearVelocity.y;
+        rb.linearVelocity = targetVelocity;
+    }
+
+    private void HandleRotation()
+    {
+        Vector3 lookDirection = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+
+        if (lookDirection.magnitude > 0.1f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(lookDirection);
+
+            // WE STOPPED READING eulerAngles! 
+            // Instead, we force the X rotation to be EXACTLY the offset you provided, Z to 0.
+            Quaternion finalRotation = Quaternion.Euler(modelXOffset, targetRot.eulerAngles.y, 0);
+
+            // Using rb.MoveRotation is safer for physics objects than modifying transform directly
+            rb.MoveRotation(Quaternion.Slerp(transform.rotation, finalRotation, rotateSpeed * Time.fixedDeltaTime));
+        }
+    }
+}
