@@ -10,11 +10,14 @@ public class InventoryManager : MonoBehaviour
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChangedCallback;
 
+    public string currentlyEquippedItem = "";
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {

@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI; // If using legacy Text
-// using TMPro; // Uncomment this if using TextMeshPro for your slot text
+using UnityEngine.InputSystem;
+using TMPro;
 
 public class InventoryUIManager : MonoBehaviour
 {
@@ -13,23 +13,22 @@ public class InventoryUIManager : MonoBehaviour
 
     private void Start()
     {
-        // Make sure the inventory is closed when the game starts
         if (inventoryPanel != null)
         {
             inventoryPanel.SetActive(false);
         }
 
-        // Listen to the manager's event
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.onInventoryChangedCallback += UpdateUI;
+
+            UpdateUI();
         }
     }
 
     private void Update()
     {
-        // Press B to open/close
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Keyboard.current != null && Keyboard.current.bKey.wasPressedThisFrame)
         {
             ToggleInventory();
         }
@@ -40,7 +39,6 @@ public class InventoryUIManager : MonoBehaviour
         isInventoryOpen = !isInventoryOpen;
         inventoryPanel.SetActive(isInventoryOpen);
 
-        // Manage mouse cursor visibility
         if (isInventoryOpen)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -55,24 +53,24 @@ public class InventoryUIManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        // 1. Destroy all existing slots to avoid duplicates
         foreach (Transform child in itemsGridParent)
         {
             Destroy(child.gameObject);
         }
 
-        // 2. Create a new slot for each item in the list
         foreach (string itemName in InventoryManager.Instance.inventoryItems)
         {
             GameObject newSlot = Instantiate(itemSlotPrefab, itemsGridParent);
 
-            // Find the Text component inside the new slot
-            Text slotText = newSlot.GetComponentInChildren<Text>();
-            // TextMeshProUGUI slotText = newSlot.GetComponentInChildren<TextMeshProUGUI>(); // Use this if using TMPro
+            TextMeshProUGUI slotText = newSlot.GetComponentInChildren<TextMeshProUGUI>();
 
             if (slotText != null)
             {
                 slotText.text = itemName;
+            }
+            else
+            {
+                Debug.LogWarning("Cannot find TextMeshProUGUI on the instantiated slot!");
             }
         }
     }
@@ -84,12 +82,4 @@ public class InventoryUIManager : MonoBehaviour
             InventoryManager.Instance.onInventoryChangedCallback -= UpdateUI;
         }
     }
-
-    //private void OnDisable()
-    //{
-    //    if(InventoryManager.Instance != null)
-    //    {
-    //        InventoryManager.Instance.onInventoryChangedCallback -= UpdateUI;
-    //    }
-    //}
 }

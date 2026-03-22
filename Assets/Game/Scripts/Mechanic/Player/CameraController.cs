@@ -8,11 +8,11 @@ public class CameraController : MonoBehaviour
     public enum CameraMode { TopDown, FreeAngle }
     public CameraMode currentMode = CameraMode.FreeAngle;
 
-    [Header("Top-Down Settings (LoL Style)")]
+    [Header("Top-Down Settings ")]
     public Vector3 topDownOffset = new Vector3(0, 10, -10); // Offset for height and distance
     public float smoothSpeed = 5f;
 
-    [Header("Free Angle Settings (PUBG Style)")]
+    [Header("Free Angle Settings ")]
     public float sensitivityX = 2f;
     public float sensitivityY = 2f;
     public float distance = 5f; // Distance from the target
