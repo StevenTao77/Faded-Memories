@@ -8322,9 +8322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsUI
   camController: {fileID: 1411952136}
-  viewDropdown: {fileID: 1927830943}
-  applyButton: {fileID: 1927830944}
-  settingsPanel: {fileID: 1927830945}
 --- !u!114 &1547760713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8337,7 +8334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae054db6823135b4e846621273fa0f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
-  settingsPanel: {fileID: 1927830945}
 --- !u!114 &1547760714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8363,10 +8359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2626e44766c5714d94b7913339cd676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
-  dialoguePanel: {fileID: 1441776709}
-  dialogueText: {fileID: 835493436}
-  choiceButtonContainer: {fileID: 1012707427}
-  choiceButtonPrefab: {fileID: 2082717876292822389, guid: bc113ebc251cb1d428dca1e09977323b, type: 3}
   typingSpeed: 0.04
 --- !u!114 &1547760716
 MonoBehaviour:
@@ -10765,33 +10757,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4267060798498634973, guid: d86c910ca9a842144aea17a263236e49, type: 3}
   m_PrefabInstance: {fileID: 1927830941}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1927830943 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8525687419286399699, guid: d86c910ca9a842144aea17a263236e49, type: 3}
-  m_PrefabInstance: {fileID: 1927830941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_Dropdown
---- !u!114 &1927830944 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3590103391745304101, guid: d86c910ca9a842144aea17a263236e49, type: 3}
-  m_PrefabInstance: {fileID: 1927830941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!1 &1927830945 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1240054142755033931, guid: d86c910ca9a842144aea17a263236e49, type: 3}
-  m_PrefabInstance: {fileID: 1927830941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1930327795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1142798891717311779, guid: 03443d0d376197f4da1b566471c455af, type: 3}
@@ -11006,7 +10971,7 @@ PrefabInstance:
       addedObject: {fileID: 1987612453}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 89920812f3ab0f44e8cce1a02085fda0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1987612452}
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 89920812f3ab0f44e8cce1a02085fda0, type: 3}
 --- !u!1 &1987612450 stripped
 GameObject:
@@ -11018,28 +10983,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 89920812f3ab0f44e8cce1a02085fda0, type: 3}
   m_PrefabInstance: {fileID: 1987612449}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &1987612452
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1987612450}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4749707353668628313, guid: 89920812f3ab0f44e8cce1a02085fda0, type: 3}
 --- !u!65 &1987612453
 BoxCollider:
   m_ObjectHideFlags: 0
