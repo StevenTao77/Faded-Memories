@@ -16,11 +16,16 @@ public class PlayerMovement : MonoBehaviour
     public CameraController camController;
 
     private Rigidbody rb;
+    private Animator animator;
     private Vector2 moveInput;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        // Grab the Animator from the player model
+        animator = GetComponentInChildren<Animator>();
+
         // Double check to ensure physics won't tip the capsule over
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
@@ -34,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         HandleRotation();
+        UpdateAnimation();
     }
 
     private void GetInput()
@@ -81,12 +87,24 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion targetRot = Quaternion.LookRotation(lookDirection);
 
-            // WE STOPPED READING eulerAngles! 
-            // Instead, we force the X rotation to be EXACTLY the offset you provided, Z to 0.
+            // STOPPED READING eulerAngles! 
+            // Instead, force the X rotation to be EXACTLY the offset you provided, Z to 0.
             Quaternion finalRotation = Quaternion.Euler(modelXOffset, targetRot.eulerAngles.y, 0);
 
             // Using rb.MoveRotation is safer for physics objects than modifying transform directly
             rb.MoveRotation(Quaternion.Slerp(transform.rotation, finalRotation, rotateSpeed * Time.fixedDeltaTime));
         }
+    }
+
+    private void UpdateAnimation()
+    {
+        if (animator == null) return;
+
+        // Calculate horizontal speed 
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        float currentSpeed = horizontalVelocity.magnitude;
+
+        // Pass the speed to the Animator parameter
+        animator.SetFloat("Speed", currentSpeed);
     }
 }

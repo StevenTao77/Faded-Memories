@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Cabin_inside/Cabin_inside_UI.unity
     guid: 69d3e95a008bd3d45a4aa1f0427e34cf
   - enabled: 0
-    path: Assets/Game/Scenes/Cabin_inside_UI.unity
+    path: Assets/Game/Scenes/Cabin_inside.unity
     guid: 2d17b40ce14fd2a499f4edb0716252e5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
