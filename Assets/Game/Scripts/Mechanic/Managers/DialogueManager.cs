@@ -70,6 +70,8 @@ public class DialogueManager : MonoBehaviour
             text += currentStory.Continue();
         }
 
+        SetNameInDialogue();
+
         if (displayLineCoroutine != null)
         {
             StopCoroutine(displayLineCoroutine);
@@ -77,6 +79,24 @@ public class DialogueManager : MonoBehaviour
 
         displayLineCoroutine = StartCoroutine(TypeSentence(text.Trim()));
     }
+
+    private void SetNameInDialogue()
+    {
+        if (UIManager.Instance != null && UIManager.Instance.dialogueNameText != null)
+        {
+            if (currentStory.currentTags.Count > 0)
+            {
+                string nameTag = currentStory.currentTags[0];
+                UIManager.Instance.dialogueNameText.text = nameTag;
+            }
+            else
+            {
+                Debug.LogWarning("No name tag found for this dialogue line. Make sure to add a tag in Ink for the character's name.");
+                UIManager.Instance.dialogueNameText.text = "";
+            }
+        }
+    }
+
 
     private IEnumerator TypeSentence(string sentence)
     {
