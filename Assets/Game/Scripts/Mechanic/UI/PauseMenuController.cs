@@ -6,6 +6,17 @@ public class PauseMenuController : MonoBehaviour
     // No more dragging needed in the Inspector.
 
     private bool isPaused = false;
+    public static PauseMenuController Instance { get; private set; }
+
+    private void Start()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     void Update()
     {

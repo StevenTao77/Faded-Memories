@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class DialogueTrigger : MonoBehaviour
 {
-    [Header("Narritive File")]
+    [Header("Narrative File")]
     public TextAsset inkAsset;
 
     [Header("UI Settings (Optional)")]
