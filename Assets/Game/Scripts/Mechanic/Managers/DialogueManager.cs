@@ -4,11 +4,10 @@ using TMPro;
 using Ink.Runtime;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
-    // The DialogueManager remains a Singleton for logic calls, 
-    // but it no longer stores ANY direct UI references!
     public static DialogueManager Instance;
 
     [Header("Typewriter Effect")]
@@ -17,21 +16,39 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     private Coroutine displayLineCoroutine;
 
+    private bool isDialogueActive = false;
+    private bool isTyping = false;
+    private string currentLineText = "";
+
     private void Awake()
     {
-        // 1. Simplified Singleton pattern
-        // We removed the massive Canvas protection code because the UI is now safely handled 
-        // by the Island_UI scene and the UIManager.
         if (Instance == null)
         {
             Instance = this;
-            // Optional: Keep it alive if you change scenes, but usually handled by additive loading now.
             DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    // --- SAFETY FEATURE 1: Scene Load Listener ---
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Whenever a new scene loads, forcibly reset the dialogue state.
+        // This prevents the ghost click bug completely.
+        ForceEndDialogue();
     }
 
     private void Start()
@@ -42,42 +59,83 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (!isDialogueActive) return;
+
+        // --- SAFETY FEATURE 2: UI Existence Check ---
+        // If the UI was destroyed (e.g., scene unloaded) but this manager survived,
+        // kill the dialogue state immediately so clicks don't trigger errors.
+        if (UIManager.Instance == null)
+        {
+            ForceEndDialogue();
+            return;
+        }
+
+        // Normal input detection
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+        {
+            if (currentStory.currentChoices.Count > 0 && !isTyping) return;
+
+            if (isTyping)
+            {
+                StopCoroutine(displayLineCoroutine);
+                if (UIManager.Instance != null && UIManager.Instance.dialogueText != null)
+                {
+                    UIManager.Instance.dialogueText.text = currentLineText;
+                }
+                isTyping = false;
+                DisplayChoices();
+            }
+            else
+            {
+                ContinueDialogue();
+            }
+        }
+    }
+
     public void StartDialogue(TextAsset newInkAsset)
     {
         currentStory = new Story(newInkAsset.text);
+        isDialogueActive = true;
 
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ToggleDialoguePanel(true);
         }
 
-        // Lock player via dynamic search
         SetPlayerControl(false);
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        RefreshUI();
+        ContinueDialogue();
     }
 
-    private void RefreshUI()
+    private void ContinueDialogue()
     {
         ClearUI();
 
-        string text = "";
-        while (currentStory.canContinue)
+        if (currentStory.canContinue)
         {
-            text += currentStory.Continue();
+            currentLineText = currentStory.Continue().Trim();
+            SetNameInDialogue();
+
+            if (displayLineCoroutine != null)
+            {
+                StopCoroutine(displayLineCoroutine);
+            }
+
+            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
         }
-
-        SetNameInDialogue();
-
-        if (displayLineCoroutine != null)
+        else if (currentStory.currentChoices.Count == 0)
         {
-            StopCoroutine(displayLineCoroutine);
+            EndDialogue();
         }
-
-        displayLineCoroutine = StartCoroutine(TypeSentence(text.Trim()));
+        else
+        {
+            DisplayChoices();
+        }
     }
 
     private void SetNameInDialogue()
@@ -91,15 +149,14 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("No name tag found for this dialogue line. Make sure to add a tag in Ink for the character's name.");
                 UIManager.Instance.dialogueNameText.text = "";
             }
         }
     }
 
-
     private IEnumerator TypeSentence(string sentence)
     {
+        isTyping = true;
         if (UIManager.Instance != null && UIManager.Instance.dialogueText != null)
         {
             UIManager.Instance.dialogueText.text = "";
@@ -110,7 +167,7 @@ public class DialogueManager : MonoBehaviour
                 yield return new WaitForSeconds(typingSpeed);
             }
         }
-
+        isTyping = false;
         DisplayChoices();
     }
 
@@ -118,28 +175,20 @@ public class DialogueManager : MonoBehaviour
     {
         if (UIManager.Instance == null) return;
 
-        Transform container = UIManager.Instance.choiceButtonContainer;
-        GameObject prefab = UIManager.Instance.choiceButtonPrefab;
-
-        if (currentStory.currentChoices.Count == 0)
+        if (currentStory.currentChoices.Count > 0)
         {
-            GameObject btnObj = Instantiate(prefab, container);
-            Button button = btnObj.GetComponent<Button>();
-            TextMeshProUGUI buttonText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+            Transform container = UIManager.Instance.choiceButtonContainer;
+            GameObject prefab = UIManager.Instance.choiceButtonPrefab;
 
-            buttonText.text = "End Dialogue";
-            button.onClick.AddListener(() => EndDialogue());
-            return;
-        }
+            foreach (Choice choice in currentStory.currentChoices)
+            {
+                GameObject btnObj = Instantiate(prefab, container);
+                Button button = btnObj.GetComponent<Button>();
+                TextMeshProUGUI buttonText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
 
-        foreach (Choice choice in currentStory.currentChoices)
-        {
-            GameObject btnObj = Instantiate(prefab, container);
-            Button button = btnObj.GetComponent<Button>();
-            TextMeshProUGUI buttonText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
-
-            buttonText.text = choice.text;
-            button.onClick.AddListener(() => OnClickChoice(choice));
+                buttonText.text = choice.text;
+                button.onClick.AddListener(() => OnClickChoice(choice));
+            }
         }
     }
 
@@ -156,24 +205,45 @@ public class DialogueManager : MonoBehaviour
     private void OnClickChoice(Choice choice)
     {
         currentStory.ChooseChoiceIndex(choice.index);
-        RefreshUI();
+        ContinueDialogue();
     }
 
+    // Normal end dialogue when story finishes
     private void EndDialogue()
     {
+        isDialogueActive = false;
+
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ToggleDialoguePanel(false);
         }
 
-        // Unlock player
         SetPlayerControl(true);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // 3. Dynamically find the Player and Camera in the current scene (Unchanged)
+    // --- SAFETY FEATURE 3: Hard Reset ---
+    // A clean wipe function that stops everything without assuming the UI still exists
+    public void ForceEndDialogue()
+    {
+        isDialogueActive = false;
+        isTyping = false;
+
+        if (displayLineCoroutine != null)
+        {
+            StopCoroutine(displayLineCoroutine);
+            displayLineCoroutine = null;
+        }
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ToggleDialoguePanel(false);
+            ClearUI();
+        }
+    }
+
     private void SetPlayerControl(bool canMove)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
