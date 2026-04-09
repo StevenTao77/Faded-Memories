@@ -1106,10 +1106,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6770624685567913477, guid: cfd3e1c32aae7c548aff7ba0c6e8dd71, type: 3}
-      propertyPath: m_Color.a
-      value: 0.87058824
-      objectReference: {fileID: 0}
     - target: {fileID: 7811177742333759529, guid: cfd3e1c32aae7c548aff7ba0c6e8dd71, type: 3}
       propertyPath: m_Name
       value: DIalog Canvas
