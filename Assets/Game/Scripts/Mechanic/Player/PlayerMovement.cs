@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     public CameraController camController;
 
+    [Header("Animation & Equimment States")]
+    public GameObject torchReference; // Reference to the torch GameObject for animation purposes
+
     private Rigidbody rb;
     private Animator animator;
     private Vector2 moveInput;
@@ -106,5 +109,11 @@ public class PlayerMovement : MonoBehaviour
 
         // Pass the speed to the Animator parameter
         animator.SetFloat("Speed", currentSpeed);
+
+        if (torchReference != null)
+        {
+            bool isTorchVisible = torchReference.activeInHierarchy;
+            animator.SetBool("IsHoldingTorch", isTorchVisible);
+        }
     }
 }

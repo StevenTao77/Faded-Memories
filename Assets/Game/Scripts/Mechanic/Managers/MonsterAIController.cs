@@ -5,50 +5,81 @@ public class MonsterManager : MonoBehaviour
 {
     [Header("Scene References")]
     public Transform playerTransform;
+    public GameObject playerTorch;
+
+    [Header("Dynamic Search Settings")]
+    public string monsterTag = "Monster";
+    public string fogChildObjectName = "Volumetric Fog Volume";
+
+    private GameObject monsterObject;
     private NavMeshAgent monsterAgent;
+    private BoxCollider fogCollider;
 
     [Header("Patrol Settings")]
     public float patrolRadius = 15f;
     public float patrolSpeed = 2f;
     public float waitTimeAtPoint = 2f;
 
-    [Header("Detection Settings")]
-    public float detectionRadius = 12f;
-    [Range(0, 360)] public float viewAngle = 110f;
-
-    [Header("Chase & Catch Settings")]
+    [Header("Action Settings")]
     public float chaseSpeed = 5.5f;
-
-    //The distance at which the monster "collides" or catches the player
+    public float fleeSpeed = 6.5f;
+    public float fleeDistance = 8f;
     public float catchDistance = 1.5f;
 
     private Vector3 initialPosition;
     private float waitTimer;
-    private bool isChasing = false;
+    private bool isChasingOrFleeing = false;
 
     private void Start()
     {
-        FindMonsterInEnvironment();
+        InitializeMonsterData();
     }
 
-    private void FindMonsterInEnvironment()
+    private void InitializeMonsterData()
     {
-        GameObject enemyObj = GameObject.FindWithTag("Monster");
-        if (enemyObj != null)
+        monsterObject = GameObject.FindWithTag(monsterTag);
+
+        if (monsterObject != null)
         {
-            monsterAgent = enemyObj.GetComponent<NavMeshAgent>();
+            monsterAgent = monsterObject.GetComponent<NavMeshAgent>();
+
             if (monsterAgent != null)
             {
                 initialPosition = monsterAgent.transform.position;
                 monsterAgent.speed = patrolSpeed;
                 SetNewPatrolDestination();
             }
+
+            Transform fogTransform = monsterObject.transform.Find(fogChildObjectName);
+            if (fogTransform != null)
+            {
+                fogCollider = fogTransform.GetComponent<BoxCollider>();
+            }
+            else
+            {
+                BoxCollider[] allBoxColliders = monsterObject.GetComponentsInChildren<BoxCollider>();
+                foreach (BoxCollider bc in allBoxColliders)
+                {
+                    if (bc.gameObject.name == fogChildObjectName)
+                    {
+                        fogCollider = bc;
+                        break;
+                    }
+                }
+            }
+
+            if (fogCollider == null)
+            {
+                Debug.LogWarning("MonsterManager: Fog BoxCollider not found on monster's children.");
+            }
         }
         else
         {
-            Debug.LogWarning("MonsterManager: No GameObject with tag 'Enemy' found.");
+            Debug.LogError("MonsterManager: Cannot find Monster in the scene by tag.");
         }
     }
+
+     
 
     private void Update()
     {
@@ -57,47 +88,40 @@ public class MonsterManager : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(monsterAgent.transform.position, playerTransform.position);
 
-        // Core Logic Update: 3-Tier State Machine
-      
-        if (distanceToPlayer <= catchDistance)
+        bool isTorchOn = playerTorch != null && playerTorch.activeInHierarchy;
+
+        bool isPlayerInFog = false;
+        if (fogCollider != null)
+        {
+            isPlayerInFog = fogCollider.bounds.Contains(playerTransform.position);
+        }
+
+       
+         
+
+        if (distanceToPlayer <= catchDistance && !isTorchOn)
         {
             StopAndCatchPlayer();
         }
-    
-        else if (CanSeePlayer(distanceToPlayer))
+        else if (isPlayerInFog && isTorchOn)
+        {
+            AvoidPlayer();
+        }
+        else if (isPlayerInFog && !isTorchOn)
         {
             ChasePlayer();
         }
-       
         else
         {
             PatrolArea();
         }
     }
 
-    private bool CanSeePlayer(float distanceToPlayer)
-    {
-        if (distanceToPlayer > detectionRadius) return false;
-
-        Vector3 directionToPlayer = (playerTransform.position - monsterAgent.transform.position).normalized;
-        float angleBetweenEnemyAndPlayer = Vector3.Angle(monsterAgent.transform.forward, directionToPlayer);
-
-        if (angleBetweenEnemyAndPlayer < viewAngle / 2f)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     private void StopAndCatchPlayer()
     {
-        // Force the agent to stop moving
         monsterAgent.isStopped = true;
-
-        // Keep looking at the player while stopped
         Vector3 direction = (playerTransform.position - monsterAgent.transform.position).normalized;
-        direction.y = 0;  
+        direction.y = 0;
 
         if (direction != Vector3.zero)
         {
@@ -108,21 +132,35 @@ public class MonsterManager : MonoBehaviour
 
     private void ChasePlayer()
     {
-        // Allow the agent to move again
         monsterAgent.isStopped = false;
-
-        isChasing = true;
+        isChasingOrFleeing = true;
         monsterAgent.speed = chaseSpeed;
         monsterAgent.SetDestination(playerTransform.position);
+    }
+
+    private void AvoidPlayer()
+    {
+        monsterAgent.isStopped = false;
+        isChasingOrFleeing = true;
+        monsterAgent.speed = fleeSpeed;
+
+        Vector3 directionAway = (monsterAgent.transform.position - playerTransform.position).normalized;
+        Vector3 avoidTargetPosition = monsterAgent.transform.position + directionAway * fleeDistance;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(avoidTargetPosition, out hit, fleeDistance, NavMesh.AllAreas))
+        {
+            monsterAgent.SetDestination(hit.position);
+        }
     }
 
     private void PatrolArea()
     {
         monsterAgent.isStopped = false;
 
-        if (isChasing)
+        if (isChasingOrFleeing)
         {
-            isChasing = false;
+            isChasingOrFleeing = false;
             monsterAgent.speed = patrolSpeed;
             SetNewPatrolDestination();
         }
@@ -141,7 +179,6 @@ public class MonsterManager : MonoBehaviour
     private void SetNewPatrolDestination()
     {
         if (monsterAgent == null) return;
-
         Vector3 randomDirection = Random.insideUnitSphere * patrolRadius;
         randomDirection += initialPosition;
 
@@ -150,47 +187,5 @@ public class MonsterManager : MonoBehaviour
         {
             monsterAgent.SetDestination(hit.position);
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (monsterAgent == null) return;
-         
-        Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(monsterAgent.transform.position, detectionRadius);
-         
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(monsterAgent.transform.position, catchDistance);
-         
-        Vector3 leftBoundary = DirFromAngle(-viewAngle / 2f, false);
-        Vector3 rightBoundary = DirFromAngle(viewAngle / 2f, false);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(monsterAgent.transform.position, monsterAgent.transform.position + leftBoundary * detectionRadius);
-        Gizmos.DrawLine(monsterAgent.transform.position, monsterAgent.transform.position + rightBoundary * detectionRadius);
-         
-        if (playerTransform != null)
-        {
-            float distance = Vector3.Distance(monsterAgent.transform.position, playerTransform.position);
-
-            if (distance <= catchDistance)
-            { 
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(monsterAgent.transform.position, playerTransform.position);
-            }
-            else if (CanSeePlayer(distance))
-            { 
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(monsterAgent.transform.position, playerTransform.position);
-            }
-        }
-    }
-
-    private Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
-    {
-        if (!angleIsGlobal)
-        {
-            angleInDegrees += monsterAgent.transform.eulerAngles.y;
-        }
-        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 }

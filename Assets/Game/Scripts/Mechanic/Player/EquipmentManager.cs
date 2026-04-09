@@ -65,7 +65,7 @@ public class EquipmentManager : MonoBehaviour
         bool found = false;
         foreach (EquipableItem item in allHandItems)
         {
-            if (item.itemName == targetName)
+            if (item.itemName == targetName && !item.handModel.activeSelf  )
             {
                 item.handModel.SetActive(true);
                 found = true;
