@@ -13,12 +13,21 @@ public class DialogueManager : MonoBehaviour
     [Header("Typewriter Effect")]
     public float typingSpeed = 0.02f;
 
+    [Header("Voice Settings")]
+    [SerializeField] private AudioClip voiceClip1;
+    [SerializeField] private AudioClip voiceClip2;
+    [SerializeField] private AudioClip voiceClip3;
+    [SerializeField] private AudioClip voiceClip4;
+    [SerializeField] private AudioSource voiceAudioSource;
+    [SerializeField] private bool playVoiceLines = true;
+
     private Story currentStory;
     private Coroutine displayLineCoroutine;
 
     private bool isDialogueActive = false;
     private bool isTyping = false;
     private string currentLineText = "";
+    private int currentDialogueLine = 0;
 
     private void Awake()
     {
@@ -55,7 +64,17 @@ public class DialogueManager : MonoBehaviour
     {
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ToggleDialoguePanel(false);
+          UIManager.Instance.ToggleDialoguePanel(false);
+        }
+
+        // Create voice audio source if one isn't assigned
+        if (voiceAudioSource == null)
+   {
+            voiceAudioSource = GetComponent<AudioSource>();
+            if (voiceAudioSource == null)
+   {
+     voiceAudioSource = gameObject.AddComponent<AudioSource>();
+}
         }
     }
 
@@ -98,11 +117,12 @@ public class DialogueManager : MonoBehaviour
     {
         currentStory = new Story(newInkAsset.text);
         isDialogueActive = true;
+     currentDialogueLine = 0;
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ToggleDialoguePanel(true);
-        }
+          UIManager.Instance.ToggleDialoguePanel(true);
+     }
 
         SetPlayerControl(false);
 
@@ -116,43 +136,74 @@ public class DialogueManager : MonoBehaviour
     {
         ClearUI();
 
-        if (currentStory.canContinue)
-        {
+     if (currentStory.canContinue)
+{
             currentLineText = currentStory.Continue().Trim();
-            SetNameInDialogue();
+        SetNameInDialogue();
+       PlayVoiceForCurrentLine();
 
             if (displayLineCoroutine != null)
-            {
-                StopCoroutine(displayLineCoroutine);
-            }
+       {
+    StopCoroutine(displayLineCoroutine);
+     }
 
-            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+ displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
         }
         else if (currentStory.currentChoices.Count == 0)
-        {
+ {
             EndDialogue();
         }
-        else
+      else
         {
-            DisplayChoices();
+  DisplayChoices();
         }
+    }
+
+    private void PlayVoiceForCurrentLine()
+ {
+        if (!playVoiceLines || voiceAudioSource == null)
+   return;
+
+ // Play the assigned voice clip for the current line
+   AudioClip voiceClip = GetVoiceClipForCurrentLine();
+  if (voiceClip != null)
+   {
+     voiceAudioSource.clip = voiceClip;
+   voiceAudioSource.Play();
+    }
+    
+   // Move to next line for next time
+   currentDialogueLine++;
+    }
+
+    private AudioClip GetVoiceClipForCurrentLine()
+    {
+        // Play clips in sequence: line 1 = clip1, line 2 = clip2, etc.
+        return currentDialogueLine switch
+        {
+     0 => voiceClip1,
+            1 => voiceClip2,
+       2 => voiceClip3,
+       3 => voiceClip4,
+  _ => null  // No clip assigned if more than 4 lines
+        };
     }
 
     private void SetNameInDialogue()
-    {
+ {
         if (UIManager.Instance != null && UIManager.Instance.dialogueNameText != null)
         {
-            if (currentStory.currentTags.Count > 0)
-            {
-                string nameTag = currentStory.currentTags[0];
-                UIManager.Instance.dialogueNameText.text = nameTag;
-            }
-            else
-            {
-                UIManager.Instance.dialogueNameText.text = "";
-            }
-        }
-    }
+ if (currentStory.currentTags.Count > 0)
+        {
+       string nameTag = currentStory.currentTags[0];
+     UIManager.Instance.dialogueNameText.text = nameTag;
+   }
+      else
+      {
+ UIManager.Instance.dialogueNameText.text = "";
+      }
+   }
+  }
 
     private IEnumerator TypeSentence(string sentence)
     {

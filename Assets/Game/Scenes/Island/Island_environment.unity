@@ -7140,7 +7140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894231698552616830, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.78
       objectReference: {fileID: 0}
     - target: {fileID: 2894231698552616830, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7192,11 +7192,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5085325216870184130, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.74
+      value: 2.4
       objectReference: {fileID: 0}
     - target: {fileID: 5085325216870184130, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.17
+      value: -0.85
       objectReference: {fileID: 0}
     - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: inkAsset
@@ -7213,7 +7213,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2395568091621890127, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1380985720}
   m_SourcePrefab: {fileID: 100100000, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
 --- !u!1 &596863318
 GameObject:
@@ -9915,6 +9918,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2894231698552616830, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
   m_PrefabInstance: {fileID: 915959812}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1380985719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2395568091621890127, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
+  m_PrefabInstance: {fileID: 583163605}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1380985720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380985719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2626e44766c5714d94b7913339cd676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
+  typingSpeed: 0.02
+  voiceClip1: {fileID: 8300000, guid: 292264e5b7618f04e881e85888475f46, type: 3}
+  voiceClip2: {fileID: 8300000, guid: a0b154384dfbd644bb65214bf05859c7, type: 3}
+  voiceClip3: {fileID: 0}
+  voiceClip4: {fileID: 0}
+  voiceAudioSource: {fileID: 0}
+  playVoiceLines: 1
+  useFirstTagForVoice: 1
+  useFirstTagForName: 1
 --- !u!1 &1411952131
 GameObject:
   m_ObjectHideFlags: 0
