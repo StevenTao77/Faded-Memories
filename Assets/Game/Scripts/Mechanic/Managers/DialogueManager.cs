@@ -13,21 +13,15 @@ public class DialogueManager : MonoBehaviour
     [Header("Typewriter Effect")]
     public float typingSpeed = 0.02f;
 
-    [Header("Voice Settings")]
-    [SerializeField] private AudioClip voiceClip1;
-    [SerializeField] private AudioClip voiceClip2;
-    [SerializeField] private AudioClip voiceClip3;
-    [SerializeField] private AudioClip voiceClip4;
-    [SerializeField] private AudioSource voiceAudioSource;
-    [SerializeField] private bool playVoiceLines = true;
-
     private Story currentStory;
     private Coroutine displayLineCoroutine;
+
+    // Store reference to the trigger that started the current dialogue
+    private DialogueTrigger currentActiveTrigger;
 
     private bool isDialogueActive = false;
     private bool isTyping = false;
     private string currentLineText = "";
-    private int currentDialogueLine = 0;
 
     private void Awake()
     {
@@ -42,7 +36,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // --- SAFETY FEATURE 1: Scene Load Listener ---
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -55,8 +48,6 @@ public class DialogueManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Whenever a new scene loads, forcibly reset the dialogue state.
-        // This prevents the ghost click bug completely.
         ForceEndDialogue();
     }
 
@@ -64,17 +55,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (UIManager.Instance != null)
         {
-          UIManager.Instance.ToggleDialoguePanel(false);
-        }
-
-        // Create voice audio source if one isn't assigned
-        if (voiceAudioSource == null)
-   {
-            voiceAudioSource = GetComponent<AudioSource>();
-            if (voiceAudioSource == null)
-   {
-     voiceAudioSource = gameObject.AddComponent<AudioSource>();
-}
+            UIManager.Instance.ToggleDialoguePanel(false);
         }
     }
 
@@ -82,16 +63,12 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isDialogueActive) return;
 
-        // --- SAFETY FEATURE 2: UI Existence Check ---
-        // If the UI was destroyed (e.g., scene unloaded) but this manager survived,
-        // kill the dialogue state immediately so clicks don't trigger errors.
         if (UIManager.Instance == null)
         {
             ForceEndDialogue();
             return;
         }
 
-        // Normal input detection
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
             if (currentStory.currentChoices.Count > 0 && !isTyping) return;
@@ -113,16 +90,22 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(TextAsset newInkAsset)
+    // --- MODIFIED: Now requires the initiator trigger ---
+    public void StartDialogue(TextAsset newInkAsset, DialogueTrigger initiator)
     {
         currentStory = new Story(newInkAsset.text);
         isDialogueActive = true;
-     currentDialogueLine = 0;
+
+        currentActiveTrigger = initiator;
+        if (currentActiveTrigger != null)
+        {
+            currentActiveTrigger.ResetLineCounter();
+        }
 
         if (UIManager.Instance != null)
         {
-          UIManager.Instance.ToggleDialoguePanel(true);
-     }
+            UIManager.Instance.ToggleDialoguePanel(true);
+        }
 
         SetPlayerControl(false);
 
@@ -136,74 +119,49 @@ public class DialogueManager : MonoBehaviour
     {
         ClearUI();
 
-     if (currentStory.canContinue)
-{
+        if (currentStory.canContinue)
+        {
             currentLineText = currentStory.Continue().Trim();
-        SetNameInDialogue();
-       PlayVoiceForCurrentLine();
+            SetNameInDialogue();
+
+            // Tell the trigger to play its local voice line
+            if (currentActiveTrigger != null)
+            {
+                currentActiveTrigger.PlayNextVoiceLine();
+            }
 
             if (displayLineCoroutine != null)
-       {
-    StopCoroutine(displayLineCoroutine);
-     }
+            {
+                StopCoroutine(displayLineCoroutine);
+            }
 
- displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
         }
         else if (currentStory.currentChoices.Count == 0)
- {
+        {
             EndDialogue();
         }
-      else
+        else
         {
-  DisplayChoices();
+            DisplayChoices();
         }
-    }
-
-    private void PlayVoiceForCurrentLine()
- {
-        if (!playVoiceLines || voiceAudioSource == null)
-   return;
-
- // Play the assigned voice clip for the current line
-   AudioClip voiceClip = GetVoiceClipForCurrentLine();
-  if (voiceClip != null)
-   {
-     voiceAudioSource.clip = voiceClip;
-   voiceAudioSource.Play();
-    }
-    
-   // Move to next line for next time
-   currentDialogueLine++;
-    }
-
-    private AudioClip GetVoiceClipForCurrentLine()
-    {
-        // Play clips in sequence: line 1 = clip1, line 2 = clip2, etc.
-        return currentDialogueLine switch
-        {
-     0 => voiceClip1,
-            1 => voiceClip2,
-       2 => voiceClip3,
-       3 => voiceClip4,
-  _ => null  // No clip assigned if more than 4 lines
-        };
     }
 
     private void SetNameInDialogue()
- {
+    {
         if (UIManager.Instance != null && UIManager.Instance.dialogueNameText != null)
         {
- if (currentStory.currentTags.Count > 0)
-        {
-       string nameTag = currentStory.currentTags[0];
-     UIManager.Instance.dialogueNameText.text = nameTag;
-   }
-      else
-      {
- UIManager.Instance.dialogueNameText.text = "";
-      }
-   }
-  }
+            if (currentStory.currentTags.Count > 0)
+            {
+                string nameTag = currentStory.currentTags[0];
+                UIManager.Instance.dialogueNameText.text = nameTag;
+            }
+            else
+            {
+                UIManager.Instance.dialogueNameText.text = "";
+            }
+        }
+    }
 
     private IEnumerator TypeSentence(string sentence)
     {
@@ -259,10 +217,10 @@ public class DialogueManager : MonoBehaviour
         ContinueDialogue();
     }
 
-    // Normal end dialogue when story finishes
     private void EndDialogue()
     {
         isDialogueActive = false;
+        currentActiveTrigger = null;
 
         if (UIManager.Instance != null)
         {
@@ -275,12 +233,11 @@ public class DialogueManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // --- SAFETY FEATURE 3: Hard Reset ---
-    // A clean wipe function that stops everything without assuming the UI still exists
     public void ForceEndDialogue()
     {
         isDialogueActive = false;
         isTyping = false;
+        currentActiveTrigger = null;
 
         if (displayLineCoroutine != null)
         {
