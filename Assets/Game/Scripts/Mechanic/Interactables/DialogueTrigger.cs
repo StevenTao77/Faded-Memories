@@ -3,8 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class DialogueTrigger : MonoBehaviour
 {
-    [Header("Narrative File")]
+    [Header("Narrative Settings")]
     public TextAsset inkAsset;
+
+    [Tooltip("Optional: Assign a video to play before this dialogue. Leave empty to skip video.")]
+    public UnityEngine.Video.VideoClip introVideo;
 
     [Header("UI Settings (Optional)")]
     public GameObject interactPrompt;
@@ -29,7 +32,6 @@ public class DialogueTrigger : MonoBehaviour
             interactPrompt.SetActive(false);
         }
 
-        // Auto-setup AudioSource just like the old Manager did
         if (playVoiceLines && voiceAudioSource == null)
         {
             voiceAudioSource = GetComponent<AudioSource>();
@@ -53,8 +55,21 @@ public class DialogueTrigger : MonoBehaviour
                 {
                     if (interactPrompt != null) interactPrompt.SetActive(false);
 
-                    // Pass 'this' trigger to the Manager so it knows who is talking
-                    DialogueManager.Instance.StartDialogue(inkAsset, this);
+                    // Route A: Play cinematic first, then dialogue
+                    if (introVideo != null && GlobalCinematicManager.Instance != null)
+                    {
+                        DialogueManager.Instance.SetPlayerControl(false);
+
+                        GlobalCinematicManager.Instance.PlayCinematic(introVideo, () =>
+                        {
+                            DialogueManager.Instance.StartDialogue(inkAsset, this);
+                        });
+                    }
+                    // Route B: Start dialogue directly
+                    else
+                    {
+                        DialogueManager.Instance.StartDialogue(inkAsset, this);
+                    }
                 }
             }
         }
@@ -88,8 +103,6 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    // --- NEW: Audio logic transplanted from Manager ---
-
     public void ResetLineCounter()
     {
         currentDialogueLine = 0;
@@ -102,7 +115,7 @@ public class DialogueTrigger : MonoBehaviour
         AudioClip voiceClip = GetVoiceClipForCurrentLine();
         if (voiceClip != null)
         {
-            voiceAudioSource.Stop(); // Stop previous clip
+            voiceAudioSource.Stop();
             voiceAudioSource.clip = voiceClip;
             voiceAudioSource.Play();
         }

@@ -1544,6 +1544,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4900000, guid: 3d337ea3f030f20468b9bf8478dc70b1, type: 3}
     - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
+      propertyPath: introVideo
+      value: 
+      objectReference: {fileID: 32900000, guid: beb56c486ec742a4ead2ab5aa4bf4e2d, type: 3}
+    - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: voiceClip1
       value: 
       objectReference: {fileID: 8300000, guid: e73e6acec69ffd440b5a9821254fc80d, type: 3}

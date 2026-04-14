@@ -252,7 +252,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void SetPlayerControl(bool canMove)
+    public void SetPlayerControl(bool canMove)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
