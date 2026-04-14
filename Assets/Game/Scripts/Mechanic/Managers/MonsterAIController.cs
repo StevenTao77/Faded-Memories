@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class MonsterManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class MonsterManager : MonoBehaviour
     [Header("Dynamic Search Settings")]
     public string monsterTag = "Monster";
     public string fogChildObjectName = "Volumetric Fog Volume";
+    [Tooltip("The exact name of the torch object in the player's hierarchy. Used to reacquire the reference across scenes.")]
+    public string torchObjectName = "torch";
 
     private GameObject monsterObject;
     private NavMeshAgent monsterAgent;
@@ -29,6 +32,62 @@ public class MonsterManager : MonoBehaviour
     private Vector3 initialPosition;
     private float waitTimer;
     private bool isChasingOrFleeing = false;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitializeMonsterData();
+
+        // Re-find player and torch if references are lost after scene transition
+        if (playerTransform == null || playerTorch == null)
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                playerTransform = player.transform;
+
+                // Recursively search for the torch in the player's children
+                Transform torchTransform = FindChildRecursively(player.transform, torchObjectName);
+
+                if (torchTransform != null)
+                {
+                    playerTorch = torchTransform.gameObject;
+                }
+                else
+                {
+                    Debug.LogWarning($"MonsterManager: Player found, but child named '{torchObjectName}' is missing. Torch detection will fail.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("MonsterManager: Cannot find object with 'Player' tag after scene load.");
+            }
+        }
+    }
+
+    // Helper method: Recursively traverse all children to find an object by name
+    private Transform FindChildRecursively(Transform parent, string nameToFind)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == nameToFind)
+                return child;
+
+            Transform result = FindChildRecursively(child, nameToFind);
+            if (result != null)
+                return result;
+        }
+        return null;
+    }
 
     private void Start()
     {
@@ -75,11 +134,9 @@ public class MonsterManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("MonsterManager: Cannot find Monster in the scene by tag.");
+            Debug.LogWarning("MonsterManager: Cannot find Monster in the scene by tag. (This is normal if the current scene doesn't have a monster)");
         }
     }
-
-     
 
     private void Update()
     {
@@ -88,6 +145,7 @@ public class MonsterManager : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(monsterAgent.transform.position, playerTransform.position);
 
+        // Check if the torch is active in the hierarchy
         bool isTorchOn = playerTorch != null && playerTorch.activeInHierarchy;
 
         bool isPlayerInFog = false;
@@ -95,9 +153,6 @@ public class MonsterManager : MonoBehaviour
         {
             isPlayerInFog = fogCollider.bounds.Contains(playerTransform.position);
         }
-
-       
-         
 
         if (distanceToPlayer <= catchDistance && !isTorchOn)
         {

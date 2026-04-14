@@ -1236,6 +1236,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PauseMenuController, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 2574756148890109715, guid: 2193b8ecbfe4ad4438996a06b8cbd25d, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3084198340192080353, guid: 2193b8ecbfe4ad4438996a06b8cbd25d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.385

@@ -12,14 +12,14 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Island/Island_main.unity
     guid: e554219163e22d8438e7b029797e2f18
   - enabled: 1
-    path: Assets/Game/Scenes/Island/Island_UI.unity
-    guid: 49b2b9eb7bf53c847a3fbb895fc4c6bd
-  - enabled: 1
     path: Assets/Game/Scenes/Island/Island_environment.unity
     guid: 03485f0a1d8a0c745b6c8706e136b2c3
   - enabled: 1
     path: Assets/Game/Scenes/Island/Island_mechanic.unity
     guid: 345a724df8fd3c045b2dec64c47503c1
+  - enabled: 1
+    path: Assets/Game/Scenes/Island/Island_UI.unity
+    guid: f37a6fdf652b7504e9a3c8e6fabcea91
   - enabled: 1
     path: Assets/Game/Scenes/Cabin_inside/Cabin_inside_envir.unity
     guid: 4b4a0536359162f419a88bd739883a4d
@@ -32,9 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game/Scenes/Cabin_inside/Cabin_inside_UI.unity
     guid: 69d3e95a008bd3d45a4aa1f0427e34cf
-  - enabled: 0
-    path: Assets/Game/Scenes/Cabin_inside.unity
-    guid: 2d17b40ce14fd2a499f4edb0716252e5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,38 +1,67 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsUI : MonoBehaviour
 {
     [Header("Mechanic References")]
     public CameraController camController;
 
-    void Start()
+    private void OnEnable()
     {
-        // Tell the apply button inside the UIManager to run the OnApply method
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        BindApplyButton();
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BindApplyButton();
+    }
+
+    private void BindApplyButton()
+    {
         if (UIManager.Instance != null && UIManager.Instance.applyButton != null)
         {
+            UIManager.Instance.applyButton.onClick.RemoveListener(OnApply);
             UIManager.Instance.applyButton.onClick.AddListener(OnApply);
         }
         else
         {
-            Debug.LogWarning("UIManager or Apply Button is not set up correctly!");
+            Debug.LogWarning("SettingsUI: UIManager or Apply Button is missing during binding!");
         }
     }
 
     void OnApply()
     {
-        // 1. Get the dropdown value directly from the UIManager
+        if (UIManager.Instance == null || UIManager.Instance.viewDropdown == null) return;
+
         int value = UIManager.Instance.viewDropdown.value;
 
-        // 2. Update Camera Mode
-        camController.SetMode(value);
+        
+        if (camController == null)
+        {
+            camController = FindObjectOfType<CameraController>();
 
-        // 3. Tell the UIManager to close the settings panel
+            if (camController == null)
+            {
+                Debug.LogWarning("SettingsUI: Could not find any CameraController in the current scene!");
+            }
+        }
+
+        // Apply camera mode if we successfully found the controller
+        if (camController != null)
+        {
+            camController.SetMode(value);
+        }
+
         UIManager.Instance.ToggleSettingsPanel(false);
 
-        // 4. Resume game flow
         Time.timeScale = 1f;
 
-        // 5. Handle Cursor State based on mode
         if (value == 1)
         {
             Cursor.lockState = CursorLockMode.Locked;
