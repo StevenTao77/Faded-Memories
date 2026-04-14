@@ -18,6 +18,7 @@ public class IntroVideoManager : MonoBehaviour
 
     [Header("After Video Event")]
     public UnityEvent onVideoFinished;
+    public bool skipAllowed = true;
 
     private CanvasGroup videoCanvasGroup;
     private bool isVideoActive = false;
@@ -67,6 +68,7 @@ public class IntroVideoManager : MonoBehaviour
         if (introVideoPlayer != null && videoScreenUI != null && !isVideoActive && !isTransitioning)
         {
             StartCoroutine(CinematicPlaySequence());
+             
         }
     }
 
