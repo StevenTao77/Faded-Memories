@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: THErig|TorchWalk
-  m_Speed: 1
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4982580520298798747}
@@ -149,7 +149,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: THErig|Walk
-  m_Speed: 1
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3940419498879100913}
@@ -367,7 +367,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -8373302080092620512, guid: f2b92043845ed464f9b4555fe7af6f34, type: 3}
+  m_Motion: {fileID: 6025498427828910235, guid: f36c04817b483f44d8c2debbab37311c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -452,7 +452,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 8689313906556848383, guid: 41287a0568c9469458a393e16bda0194, type: 3}
+  m_Motion: {fileID: 3259897923776104413, guid: f36c04817b483f44d8c2debbab37311c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
