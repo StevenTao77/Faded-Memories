@@ -17,7 +17,7 @@ public class CharacterSelect : MonoBehaviour
             moveTimer += Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             // indicator is visible when using keyboard
             if (indicator != null)
@@ -41,7 +41,7 @@ public class CharacterSelect : MonoBehaviour
             }
             
         }
-        else if (Input.GetKey(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             // indicator is visible when using keyboard
             if (indicator != null)
@@ -82,6 +82,7 @@ public class CharacterSelect : MonoBehaviour
             indicator.gameObject.SetActive(true);
             indicator.localPosition = charBtn[indicatorPos].localPosition;
         }
+        Debug.Log("Hovering on Character " + indicatorPos);
     }
 
     // hide the arrow when the mouse leaves

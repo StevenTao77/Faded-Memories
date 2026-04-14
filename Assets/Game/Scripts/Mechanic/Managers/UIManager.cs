@@ -24,6 +24,9 @@ public class UIManager : MonoBehaviour
     [Tooltip("The text component that displays the dialogue")]
     public TextMeshProUGUI dialogueText;
 
+    [Tooltip("The text component that displays the dialogue")]
+    public TextMeshProUGUI dialogueNameText;
+
     [Tooltip("The container transform where choice buttons will spawn")]
     public Transform choiceButtonContainer;
      
