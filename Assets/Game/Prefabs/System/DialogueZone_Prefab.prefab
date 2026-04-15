@@ -68,7 +68,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueTrigger
   inkAsset: {fileID: 0}
+  introVideo: {fileID: 0}
   interactPrompt: {fileID: 0}
+  voiceClip1: {fileID: 0}
+  voiceClip2: {fileID: 0}
+  voiceClip3: {fileID: 0}
+  voiceClip4: {fileID: 0}
+  voiceAudioSource: {fileID: 0}
+  playVoiceLines: 1
 --- !u!1001 &8516681189763416370
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87,15 +94,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3504891484870260208, guid: 9b8fc5834fbb9bf44940666926140db2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.093224
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3504891484870260208, guid: 9b8fc5834fbb9bf44940666926140db2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.54184
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3504891484870260208, guid: 9b8fc5834fbb9bf44940666926140db2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.3651428
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3504891484870260208, guid: 9b8fc5834fbb9bf44940666926140db2, type: 3}
       propertyPath: m_LocalRotation.w
