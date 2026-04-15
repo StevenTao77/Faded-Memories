@@ -289,6 +289,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: a0b154384dfbd644bb65214bf05859c7, type: 3}
     - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
+      propertyPath: TriggerVideo
+      value: 
+      objectReference: {fileID: 32900000, guid: beb56c486ec742a4ead2ab5aa4bf4e2d, type: 3}
+    - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: interactPrompt
       value: 
       objectReference: {fileID: 159539279}
