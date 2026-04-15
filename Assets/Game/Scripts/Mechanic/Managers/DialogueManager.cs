@@ -90,7 +90,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // --- MODIFIED: Now requires the initiator trigger ---
+    
     public void StartDialogue(TextAsset newInkAsset, DialogueTrigger initiator)
     {
         currentStory = new Story(newInkAsset.text);

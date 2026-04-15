@@ -6,7 +6,7 @@ public class Cabin_insideSceneLoader : MonoBehaviour
     void Start()
     {
         // Load the scenes additively so they stack on top of Island_main
-        // IMPORTANT: The spelling must exactly match your scene file names!
+      
 
         LoadSceneIfNotLoaded("Cabin_inside_envir");
         LoadSceneIfNotLoaded("Cabin_inside_mechanic");

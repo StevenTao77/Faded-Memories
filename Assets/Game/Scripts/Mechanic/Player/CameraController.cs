@@ -3,27 +3,25 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform target; // Reference to the player object
-
-    // Define available camera modes
+     
     public enum CameraMode { TopDown, FreeAngle }
     public CameraMode currentMode = CameraMode.FreeAngle;
 
     [Header("Top-Down Settings ")]
-    public Vector3 topDownOffset = new Vector3(0, 10, -10); // Offset for height and distance
+    public Vector3 topDownOffset = new Vector3(0, 10, -10);  
     public float smoothSpeed = 5f;
 
     [Header("Free Angle Settings ")]
     public float sensitivityX = 2f;
     public float sensitivityY = 2f;
     public float distance = 5f; // Distance from the target
-    public Vector2 pitchLimits = new Vector2(-10f, 60f); // Vertical rotation limits
+    public Vector2 pitchLimits = new Vector2(-10f, 60f);  
 
     private float currentX = 0f;
     private float currentY = 0f;
 
     void Start()
-    {
-        // Initialize rotation angles based on current transform
+    { 
         Vector3 angles = transform.eulerAngles;
         currentX = angles.y;
         currentY = angles.x;
@@ -35,7 +33,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void LateUpdate() // Use LateUpdate for camera following to prevent jitter
+    void LateUpdate()  
     {
         if (target == null) return;
 
@@ -48,8 +46,7 @@ public class CameraController : MonoBehaviour
             HandleFreeAngleView();
         }
     }
-
-    // Logic for Top-Down (LoL style) view
+     
     void HandleTopDownView()
     {
        
@@ -60,17 +57,14 @@ public class CameraController : MonoBehaviour
          
         transform.LookAt(target);
     }
-
-    // Logic for Free Angle (TPS style) view
+     
     void HandleFreeAngleView()
-    {
-        // Only rotate camera if the cursor is locked (gameplay active)
+    { 
         if (Cursor.lockState == CursorLockMode.Locked)
         {
             currentX += Input.GetAxis("Mouse X") * sensitivityX;
             currentY -= Input.GetAxis("Mouse Y") * sensitivityY;
-
-            // Clamp vertical rotation to prevent flipping
+             
             currentY = Mathf.Clamp(currentY, pitchLimits.x, pitchLimits.y);
         }   
 
@@ -84,8 +78,7 @@ public class CameraController : MonoBehaviour
 
         transform.LookAt(target.position + Vector3.up * 1.5f);
     }
-
-    // Public method to switch modes (called by UI)
+     
     public void SetMode(int index)
     {
         if (index == 0)

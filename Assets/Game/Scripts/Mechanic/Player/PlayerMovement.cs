@@ -8,8 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private float rotateSpeed = 10.0f;
 
-    [Header("Model Correction")]
-    [Tooltip("If the model lies down when X is 0, enter the X rotation that makes it stand up (e.g., -90 or 90)")]
+    [Header("Model Correction")] 
     [SerializeField] private float modelXOffset = -90f;
 
     [Header("References")]
@@ -90,11 +89,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion targetRot = Quaternion.LookRotation(lookDirection);
 
-            // STOPPED READING eulerAngles! 
-            // Instead, force the X rotation to be EXACTLY the offset you provided, Z to 0.
+            
             Quaternion finalRotation = Quaternion.Euler(modelXOffset, targetRot.eulerAngles.y, 0);
-
-            // Using rb.MoveRotation is safer for physics objects than modifying transform directly
+             
             rb.MoveRotation(Quaternion.Slerp(transform.rotation, finalRotation, rotateSpeed * Time.fixedDeltaTime));
         }
     }
@@ -102,8 +99,7 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateAnimation()
     {
         if (animator == null) return;
-
-        // Calculate horizontal speed 
+         
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         float currentSpeed = horizontalVelocity.magnitude;
 

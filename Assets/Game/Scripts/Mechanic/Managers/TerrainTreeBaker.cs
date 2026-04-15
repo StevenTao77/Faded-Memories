@@ -34,7 +34,7 @@ public class TerrainTreeBaker : MonoBehaviour
             treeObj.transform.position = worldPos;
             treeObj.transform.SetParent(parent.transform);
 
-            // Add a physical collider for the NavMeshSurface to "see"
+            // Add a physical collider  
             CapsuleCollider col = treeObj.AddComponent<CapsuleCollider>();
             col.radius = trunkRadius;
             col.height = trunkHeight;

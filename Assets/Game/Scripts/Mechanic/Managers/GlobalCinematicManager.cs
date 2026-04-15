@@ -8,13 +8,13 @@ public class GlobalCinematicManager : MonoBehaviour
     public static GlobalCinematicManager Instance { get; private set; }
 
     [Header("Direct UI References")]
-    [Tooltip("Drag the BlackOverlay (CanvasGroup) here")]
+    
     public CanvasGroup blackScreenCanvasGroup;
 
-    [Tooltip("Drag the VideoScreen (RawImage) here")]
+     
     public GameObject videoScreenUI;
 
-    [Tooltip("Drag the Video Player component here")]
+    
     public VideoPlayer globalVideoPlayer;
 
     [Header("Transition Settings")]
@@ -70,14 +70,14 @@ public class GlobalCinematicManager : MonoBehaviour
         isTransitioning = true;
         onVideoCompleteCallback = onComplete;
 
-        // 1. Fade OUT to black
+        //  Fade OUT to black
         if (blackScreenCanvasGroup != null)
         {
             blackScreenCanvasGroup.gameObject.SetActive(true);
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 0f, 1f, fadeDuration));
         }
 
-        // 2. Prepare the video
+        //  Prepare the video
         globalVideoPlayer.clip = clip;
         videoScreenUI.SetActive(true);
         globalVideoPlayer.Prepare();
@@ -87,7 +87,7 @@ public class GlobalCinematicManager : MonoBehaviour
             yield return null;
         }
 
-        // 3. Play and reveal
+        // Play and reveal
         globalVideoPlayer.Play();
         if (blackScreenCanvasGroup != null)
         {
@@ -110,23 +110,23 @@ public class GlobalCinematicManager : MonoBehaviour
     {
         isTransitioning = true;
 
-        // 1. Fade OUT to black
+        //Fade OUT to black
         if (blackScreenCanvasGroup != null)
         {
             blackScreenCanvasGroup.gameObject.SetActive(true);
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 0f, 1f, fadeDuration));
         }
 
-        // 2. Stop video
+        //Stop video
         globalVideoPlayer.Stop();
         videoScreenUI.SetActive(false);
 
-        // 3. Trigger Dialogue
+        //Trigger Dialogue
         onVideoCompleteCallback?.Invoke();
         onVideoCompleteCallback = null;
         isPlaying = false;
 
-        // 4. Fade IN from black
+        //Fade IN from black
         if (blackScreenCanvasGroup != null)
         {
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 1f, 0f, fadeDuration));

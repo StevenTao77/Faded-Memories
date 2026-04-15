@@ -11,7 +11,6 @@ public class MonsterManager : MonoBehaviour
     [Header("Dynamic Search Settings")]
     public string monsterTag = "Monster";
     public string fogChildObjectName = "Volumetric Fog Volume";
-    [Tooltip("The exact name of the torch object in the player's hierarchy. Used to reacquire the reference across scenes.")]
     public string torchObjectName = "torch";
 
     private GameObject monsterObject;
@@ -54,8 +53,7 @@ public class MonsterManager : MonoBehaviour
             if (player != null)
             {
                 playerTransform = player.transform;
-
-                // Recursively search for the torch in the player's children
+                 
                 Transform torchTransform = FindChildRecursively(player.transform, torchObjectName);
 
                 if (torchTransform != null)
@@ -73,8 +71,7 @@ public class MonsterManager : MonoBehaviour
             }
         }
     }
-
-    // Helper method: Recursively traverse all children to find an object by name
+     
     private Transform FindChildRecursively(Transform parent, string nameToFind)
     {
         foreach (Transform child in parent)

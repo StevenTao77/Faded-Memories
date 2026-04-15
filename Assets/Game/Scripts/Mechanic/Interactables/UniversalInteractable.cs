@@ -1,14 +1,14 @@
 using UnityEngine;
-using UnityEngine.Events; // Required for UnityEvent
+using UnityEngine.Events;  
 
 public class UniversalInteractable : MonoBehaviour
 {
     [Header("UI Prompt")]
-    [Tooltip("Drag the 3D Text or Sprite (EPrompt) here")]
+    
     public GameObject ePromptVisual;
 
     [Header("Interaction Action")]
-    [Tooltip("What happens when the player presses E? Configure this in the Inspector!")]
+    
     public UnityEvent onInteract;
 
     private bool canInteract = false;

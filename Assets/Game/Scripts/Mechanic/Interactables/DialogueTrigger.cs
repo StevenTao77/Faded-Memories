@@ -7,7 +7,7 @@ public class DialogueTrigger : MonoBehaviour
     public TextAsset inkAsset;
 
     [Tooltip("Optional: Assign a video to play before this dialogue. Leave empty to skip video.")]
-    public UnityEngine.Video.VideoClip introVideo;
+    public UnityEngine.Video.VideoClip TriggerVideo;
 
     [Header("UI Settings (Optional)")]
     public GameObject interactPrompt;
@@ -56,11 +56,11 @@ public class DialogueTrigger : MonoBehaviour
                     if (interactPrompt != null) interactPrompt.SetActive(false);
 
                     // Route A: Play cinematic first, then dialogue
-                    if (introVideo != null && GlobalCinematicManager.Instance != null)
+                    if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
                     {
                         DialogueManager.Instance.SetPlayerControl(false);
 
-                        GlobalCinematicManager.Instance.PlayCinematic(introVideo, () =>
+                        GlobalCinematicManager.Instance.PlayCinematic(TriggerVideo, () =>
                         {
                             DialogueManager.Instance.StartDialogue(inkAsset, this);
                         });
