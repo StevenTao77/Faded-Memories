@@ -178,8 +178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Back
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 45cc2e0ff644c7847864dd89e65aeb02, type: 2}
-  m_sharedMaterial: {fileID: -2818492947740670777, guid: 45cc2e0ff644c7847864dd89e65aeb02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 58baeb49fea80cd46a7d3394df66c0f9, type: 2}
+  m_sharedMaterial: {fileID: -7115965188442626583, guid: 58baeb49fea80cd46a7d3394df66c0f9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &35840050
@@ -1279,7 +1279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &467169098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1536,8 +1536,8 @@ MonoBehaviour:
 
     Viljami Jauhiainen'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 45cc2e0ff644c7847864dd89e65aeb02, type: 2}
-  m_sharedMaterial: {fileID: -2818492947740670777, guid: 45cc2e0ff644c7847864dd89e65aeb02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 58baeb49fea80cd46a7d3394df66c0f9, type: 2}
+  m_sharedMaterial: {fileID: -7115965188442626583, guid: 58baeb49fea80cd46a7d3394df66c0f9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: -61.65612, z: -301.14465, w: -444.843}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &585707696
@@ -3854,8 +3854,8 @@ MonoBehaviour:
     Sound
     Design Lead, Implementation, Concept Art'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 45cc2e0ff644c7847864dd89e65aeb02, type: 2}
-  m_sharedMaterial: {fileID: -2818492947740670777, guid: 45cc2e0ff644c7847864dd89e65aeb02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 58baeb49fea80cd46a7d3394df66c0f9, type: 2}
+  m_sharedMaterial: {fileID: -7115965188442626583, guid: 58baeb49fea80cd46a7d3394df66c0f9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3921,7 +3921,7 @@ MonoBehaviour:
   m_margin: {x: -158.63326, y: -61.65612, z: -451.32138, w: -444.843}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1690289435
