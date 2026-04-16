@@ -764,8 +764,10 @@ MonoBehaviour:
   allHandItems:
   - itemName: torch
     handModel: {fileID: 808350150}
+    itemImage: {fileID: 0}
   - itemName: Axe
     handModel: {fileID: 1785421060}
+    itemImage: {fileID: 0}
 --- !u!65 &1100581265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4897,8 +4899,10 @@ MonoBehaviour:
   allHandItems:
   - itemName: torch
     handModel: {fileID: 1677392594821255890}
+    itemImage: {fileID: 2800000, guid: 81163ab8c939359458d36700933c3cf9, type: 3}
   - itemName: Axe
     handModel: {fileID: 1733615159}
+    itemImage: {fileID: 2800000, guid: 36196a73c71fd984aa98d76b92a520ea, type: 3}
 --- !u!114 &3062786684374104252
 MonoBehaviour:
   m_ObjectHideFlags: 0

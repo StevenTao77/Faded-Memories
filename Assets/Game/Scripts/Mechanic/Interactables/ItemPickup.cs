@@ -36,7 +36,23 @@ public class ItemPickup : MonoBehaviour
 
         if (InventoryManager.Instance != null)
         {
-            InventoryManager.Instance.AddItem(itemName);
+            // Try to find the item image from EquipmentManager
+            Texture2D itemImage = null;
+            EquipmentManager equipmentManager = FindObjectOfType<EquipmentManager>();
+            
+            if (equipmentManager != null)
+            {
+                foreach (EquipableItem item in equipmentManager.allHandItems)
+                {
+                    if (item.itemName == itemName)
+                    {
+                        itemImage = item.itemImage;
+                        break;
+                    }
+                }
+            }
+
+            InventoryManager.Instance.AddItem(itemName, itemImage);
         }
 
         Destroy(gameObject);

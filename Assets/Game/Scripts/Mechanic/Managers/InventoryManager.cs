@@ -1,11 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class InventoryItem
+{
+    public string itemName;
+    public Texture2D itemImage;
+
+    public InventoryItem(string name, Texture2D image)
+    {
+        itemName = name;
+        itemImage = image;
+    }
+}
+
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
 
-    public List<string> inventoryItems = new List<string>();
+    public List<InventoryItem> inventoryItems = new List<InventoryItem>();
 
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChangedCallback;
@@ -25,9 +38,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void AddItem(string itemName)
+    public void AddItem(string itemName, Texture2D itemImage = null)
     {
-        inventoryItems.Add(itemName);
+        inventoryItems.Add(new InventoryItem(itemName, itemImage));
 
         if (onInventoryChangedCallback != null)
         {

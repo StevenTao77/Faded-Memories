@@ -6,6 +6,7 @@ public class EquipableItem
 {
     public string itemName;
     public GameObject handModel;
+    public Texture2D itemImage;
 }
 
 public class EquipmentManager : MonoBehaviour
@@ -47,17 +48,17 @@ public class EquipmentManager : MonoBehaviour
     {
         if (InventoryManager.Instance == null) return;
 
-        List<string> currentInv = InventoryManager.Instance.inventoryItems;
+        List<InventoryItem> currentInv = InventoryManager.Instance.inventoryItems;
 
         if (slotIndex >= 0 && slotIndex < currentInv.Count)
         {
-            string targetItemName = currentInv[slotIndex];
-            EquipByName(targetItemName);
+            string targetItemName = currentInv[slotIndex].itemName;
+       EquipByName(targetItemName);
         }
         else
         {
             Debug.Log("Slot " + (slotIndex + 1) + " is empty!");
-        }
+}
     }
 
     public void EquipByName(string targetName)

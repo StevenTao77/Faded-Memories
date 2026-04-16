@@ -228,7 +228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -118.7, y: 122.078}
+  m_AnchoredPosition: {x: -119, y: 122.078}
   m_SizeDelta: {x: 100, y: 122.067}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &55543776
@@ -2507,7 +2507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1539111208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3038,7 +3038,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.8, y: -199.00008}
+  m_AnchoredPosition: {x: 1.8, y: -219}
   m_SizeDelta: {x: 100, y: 122.067}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1805106620
@@ -3177,6 +3177,7 @@ MonoBehaviour:
   inventoryPanel: {fileID: 1077740647}
   itemsGridParent: {fileID: 55543775}
   itemSlotPrefab: {fileID: 2501258632648364800, guid: f6f26f30700900d4597193bc0030f274, type: 3}
+  showItemText: 0
 --- !u!114 &1880556323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3351,7 +3352,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 124, y: -199.00008}
+  m_AnchoredPosition: {x: 124, y: -219}
   m_SizeDelta: {x: 100, y: 122.067}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1912419167
@@ -3446,7 +3447,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -118.7, y: -199}
+  m_AnchoredPosition: {x: 1, y: 119}
   m_SizeDelta: {x: 100, y: 122.067}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1964449427
@@ -3544,7 +3545,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.8, y: 120.856}
+  m_AnchoredPosition: {x: -118, y: -218}
   m_SizeDelta: {x: 100, y: 122.067}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1998078619

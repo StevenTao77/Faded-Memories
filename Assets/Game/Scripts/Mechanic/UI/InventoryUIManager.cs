@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class InventoryUIManager : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class InventoryUIManager : MonoBehaviour
     public GameObject inventoryPanel;
     public Transform itemsGridParent;
     public GameObject itemSlotPrefab;
+
+    [Header("Image Display Settings")]
+    [Tooltip("Enable this to show item names as text")]
+    public bool showItemText = false;
 
     private bool isInventoryOpen = false;
 
@@ -58,19 +63,31 @@ public class InventoryUIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (string itemName in InventoryManager.Instance.inventoryItems)
+        foreach (InventoryItem item in InventoryManager.Instance.inventoryItems)
         {
             GameObject newSlot = Instantiate(itemSlotPrefab, itemsGridParent);
 
-            TextMeshProUGUI slotText = newSlot.GetComponentInChildren<TextMeshProUGUI>();
+            // Set the item image if available
+            Image slotImage = newSlot.GetComponentInChildren<Image>();
+            if (slotImage != null && item.itemImage != null)
+            {
+                slotImage.sprite = Sprite.Create(item.itemImage, new Rect(0, 0, item.itemImage.width, item.itemImage.height), Vector2.one * 0.5f);
+                slotImage.type = Image.Type.Simple;
+                slotImage.preserveAspect = true;
+            }
 
+            // Set the item name text (optional)
+            TextMeshProUGUI slotText = newSlot.GetComponentInChildren<TextMeshProUGUI>();
             if (slotText != null)
             {
-                slotText.text = itemName;
-            }
-            else
-            {
-                Debug.LogWarning("Cannot find TextMeshProUGUI on the instantiated slot!");
+                if (showItemText)
+                {
+                    slotText.text = item.itemName;
+                }
+                else
+                {
+                    slotText.gameObject.SetActive(false);
+                }
             }
         }
     }
