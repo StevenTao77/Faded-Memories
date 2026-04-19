@@ -3,22 +3,18 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class DialogueTrigger : MonoBehaviour
 {
-    [Header("Narrative Settings")]
     public TextAsset inkAsset;
-
-    [Tooltip("Optional: Assign a video to play before this dialogue. Leave empty to skip video.")]
     public UnityEngine.Video.VideoClip TriggerVideo;
-
-    [Header("UI Settings (Optional)")]
     public GameObject interactPrompt;
 
-    [Header("Voice Settings (Local)")]
     public AudioClip voiceClip1;
     public AudioClip voiceClip2;
     public AudioClip voiceClip3;
     public AudioClip voiceClip4;
     public AudioSource voiceAudioSource;
     public bool playVoiceLines = true;
+
+    public string symbolName = "";
 
     private bool playerInRange = false;
     private int currentDialogueLine = 0;
@@ -28,9 +24,7 @@ public class DialogueTrigger : MonoBehaviour
         GetComponent<Collider>().isTrigger = true;
 
         if (interactPrompt != null)
-        {
             interactPrompt.SetActive(false);
-        }
 
         if (playVoiceLines && voiceAudioSource == null)
         {
@@ -53,9 +47,27 @@ public class DialogueTrigger : MonoBehaviour
                     !UIManager.Instance.dialoguePanel.activeInHierarchy &&
                     inkAsset != null)
                 {
-                    if (interactPrompt != null) interactPrompt.SetActive(false);
+                    if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() == "boat")
+                    {
+                        if (MemorySymbolManager.Instance == null || !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
+                            return;
+                    }
 
-                    // Route A: Play cinematic first, then dialogue
+                    if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() != "boat")
+                    {
+                        if (MemorySymbolManager.Instance != null &&
+                            MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
+                            return;
+                    }
+
+                    if (interactPrompt != null)
+                        interactPrompt.SetActive(false);
+
+                    if (!string.IsNullOrEmpty(symbolName) && MemorySymbolManager.Instance != null)
+                    {
+                        MemorySymbolManager.Instance.OnSymbolInteracted(symbolName);
+                    }
+
                     if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
                     {
                         DialogueManager.Instance.SetPlayerControl(false);
@@ -65,7 +77,6 @@ public class DialogueTrigger : MonoBehaviour
                             DialogueManager.Instance.StartDialogue(inkAsset, this);
                         });
                     }
-                    // Route B: Start dialogue directly
                     else
                     {
                         DialogueManager.Instance.StartDialogue(inkAsset, this);
@@ -97,9 +108,7 @@ public class DialogueTrigger : MonoBehaviour
             playerInRange = false;
 
             if (interactPrompt != null)
-            {
                 interactPrompt.SetActive(false);
-            }
         }
     }
 
@@ -134,48 +143,4 @@ public class DialogueTrigger : MonoBehaviour
             _ => null
         };
     }
-
-#if UNITY_EDITOR
-    [ContextMenu("Auto Fit To Parent")]
-    private void AutoFitColliderToParent()
-    {
-        if (transform.parent == null)
-        {
-            Debug.LogWarning("This Prefab is not a child of any object!");
-            return;
-        }
-
-        BoxCollider myCollider = GetComponent<BoxCollider>();
-        if (myCollider == null) return;
-
-        Renderer parentRenderer = transform.parent.GetComponentInChildren<Renderer>();
-
-        if (parentRenderer != null)
-        {
-            transform.localPosition = Vector3.zero;
-            myCollider.center = Vector3.zero;
-
-            Bounds parentBounds = parentRenderer.bounds;
-            float totalGeneratedHeight_Y = parentBounds.size.y * 1.5f;
-
-            myCollider.size = new Vector3(
-                (parentBounds.size.x / transform.lossyScale.x) * 2f,
-                (totalGeneratedHeight_Y / transform.lossyScale.y),
-                (parentBounds.size.z / transform.lossyScale.z) * 2f
-            );
-
-            float offset_ToFeet = transform.parent.position.y - parentBounds.min.y;
-            float newLocal_Y_Pos = (totalGeneratedHeight_Y / 2.0f) - offset_ToFeet;
-
-            transform.localPosition = new Vector3(0, newLocal_Y_Pos / transform.parent.lossyScale.y, 0);
-            myCollider.center = Vector3.zero;
-
-            Debug.Log("Success: Trigger box auto-sized to 2x and positioned to sit on the object's base!");
-        }
-        else
-        {
-            Debug.LogWarning("Parent has no Renderer. Cannot auto-calculate size.");
-        }
-    }
-#endif
 }
