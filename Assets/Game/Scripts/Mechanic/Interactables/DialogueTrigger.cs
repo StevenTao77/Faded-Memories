@@ -14,6 +14,7 @@ public class DialogueTrigger : MonoBehaviour
     public AudioSource voiceAudioSource;
     public bool playVoiceLines = true;
 
+     
     public string symbolName = "";
 
     private bool playerInRange = false;
@@ -47,12 +48,14 @@ public class DialogueTrigger : MonoBehaviour
                     !UIManager.Instance.dialoguePanel.activeInHierarchy &&
                     inkAsset != null)
                 {
+                    
                     if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() == "boat")
                     {
                         if (MemorySymbolManager.Instance == null || !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
                             return;
                     }
 
+                     
                     if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() != "boat")
                     {
                         if (MemorySymbolManager.Instance != null &&
@@ -63,10 +66,7 @@ public class DialogueTrigger : MonoBehaviour
                     if (interactPrompt != null)
                         interactPrompt.SetActive(false);
 
-                    if (!string.IsNullOrEmpty(symbolName) && MemorySymbolManager.Instance != null)
-                    {
-                        MemorySymbolManager.Instance.OnSymbolInteracted(symbolName);
-                    }
+                     
 
                     if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
                     {
@@ -96,6 +96,13 @@ public class DialogueTrigger : MonoBehaviour
                 UIManager.Instance.dialoguePanel != null &&
                 !UIManager.Instance.dialoguePanel.activeInHierarchy)
             {
+                 
+                if (!string.IsNullOrEmpty(symbolName) && MemorySymbolManager.Instance != null)
+                {
+                    if (MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
+                        return;
+                }
+
                 interactPrompt.SetActive(true);
             }
         }

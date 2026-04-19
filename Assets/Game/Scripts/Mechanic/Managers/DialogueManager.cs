@@ -16,7 +16,7 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     private Coroutine displayLineCoroutine;
 
-    // Store reference to the trigger that started the current dialogue
+     
     private DialogueTrigger currentActiveTrigger;
 
     private bool isDialogueActive = false;
@@ -90,7 +90,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    
     public void StartDialogue(TextAsset newInkAsset, DialogueTrigger initiator)
     {
         currentStory = new Story(newInkAsset.text);
@@ -124,7 +123,6 @@ public class DialogueManager : MonoBehaviour
             currentLineText = currentStory.Continue().Trim();
             SetNameInDialogue();
 
-            // Tell the trigger to play its local voice line
             if (currentActiveTrigger != null)
             {
                 currentActiveTrigger.PlayNextVoiceLine();
@@ -219,6 +217,23 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+         
+        if (currentActiveTrigger != null)
+        {
+             
+            if (!string.IsNullOrEmpty(currentActiveTrigger.symbolName))
+            {
+                if (MemorySymbolManager.Instance != null)
+                {
+                    MemorySymbolManager.Instance.OnSymbolInteracted(currentActiveTrigger.symbolName);
+                }
+                else
+                {
+                    Debug.LogError("[DialogueManager] can't find MemorySymbolManager.Instance£¡");
+                }
+            }
+        }
+
         isDialogueActive = false;
         currentActiveTrigger = null;
 
