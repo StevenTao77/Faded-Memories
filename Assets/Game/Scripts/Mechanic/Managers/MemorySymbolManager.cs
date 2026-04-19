@@ -5,66 +5,64 @@ public class MemorySymbolManager : MonoBehaviour
 {
     public static MemorySymbolManager Instance { get; private set; }
 
-    [SerializeField] private GameObject boatSymbol;
-
+    private GameObject boatSymbol;
     private Dictionary<string, List<GameObject>> symbolDict = new Dictionary<string, List<GameObject>>();
     private HashSet<string> interactedSymbols = new HashSet<string>();
-
     private bool allSymbolsInteracted = false;
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-
         transform.SetParent(null);
-
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    public void RegisterMemoryRoot(Transform uiRoot, GameObject registeredBoat)
     {
-        if (boatSymbol != null) boatSymbol.SetActive(false);
-    }
+        boatSymbol = registeredBoat;
 
-    public void RegisterMemoryRoot(Transform uiRoot)
-    {
+        
+        if (boatSymbol != null) boatSymbol.SetActive(false);
+
         foreach (Transform child in uiRoot)
         {
+            if (child.gameObject == boatSymbol) continue;
+
             string key = child.name.ToLower().Replace("symbol", "").Trim();
-
-            if (!symbolDict.ContainsKey(key))
-                symbolDict[key] = new List<GameObject>();
-
-            if (!symbolDict[key].Contains(child.gameObject))
-                symbolDict[key].Add(child.gameObject);
+            if (!symbolDict.ContainsKey(key)) symbolDict[key] = new List<GameObject>();
+            if (!symbolDict[key].Contains(child.gameObject)) symbolDict[key].Add(child.gameObject);
         }
 
+         
         ApplyState();
     }
 
     private void ApplyState()
     {
+         
         foreach (string key in interactedSymbols)
         {
             HideSymbolIcons(key);
         }
 
-        CheckBoatCondition();
+         
+        if (allSymbolsInteracted)
+        {
+            if (boatSymbol != null) boatSymbol.SetActive(true);
+        }
+        else
+        {
+             
+            CheckBoatCondition();
+        }
     }
 
     public void OnSymbolInteracted(string symbolName)
     {
         if (string.IsNullOrEmpty(symbolName)) return;
-
         string key = symbolName.ToLower();
 
-        // Only process if it hasn't been interacted with yet
         if (!interactedSymbols.Contains(key))
         {
             interactedSymbols.Add(key);
@@ -86,14 +84,15 @@ public class MemorySymbolManager : MonoBehaviour
 
     private void CheckBoatCondition()
     {
+        
         if (!allSymbolsInteracted && symbolDict.Count > 0 && interactedSymbols.Count == symbolDict.Count)
         {
-            if (boatSymbol != null) boatSymbol.SetActive(true);
             allSymbolsInteracted = true;
+            if (boatSymbol != null) boatSymbol.SetActive(true);
+            Debug.Log("[MemoryManager] got it");
         }
     }
 
     public bool HasInteractedWithSymbol(string symbolName) => interactedSymbols.Contains(symbolName.ToLower());
-
     public bool AreAllSymbolsInteracted() => allSymbolsInteracted;
 }

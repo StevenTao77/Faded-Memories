@@ -2,16 +2,20 @@ using UnityEngine;
 
 public class MemoryUIRegister : MonoBehaviour
 {
-    private void Start()
+    [Header("UI References")]
+    [Tooltip("Drag the boat icon from this UI scene here")]
+    public GameObject boatIcon;
+
+    private void OnEnable()
     {
-        
         if (MemorySymbolManager.Instance != null)
         {
-            MemorySymbolManager.Instance.RegisterMemoryRoot(this.transform);
+            // Pass BOTH the parent transform (for icons) AND the boat explicitly
+            MemorySymbolManager.Instance.RegisterMemoryRoot(this.transform, boatIcon);
         }
         else
         {
-            Debug.LogWarning("UI tried to register, but MemorySymbolManager does not exist.");
+            Debug.LogWarning("[UIRegister] MemorySymbolManager not found yet. Are you running from the main scene?");
         }
     }
 }

@@ -1,4 +1,13 @@
 using UnityEngine;
+using System.Collections.Generic;
+
+ 
+[System.Serializable]
+public class ChoiceVideoPair
+{
+    public string videoTag;
+    public UnityEngine.Video.VideoClip videoClip;
+}
 
 [RequireComponent(typeof(BoxCollider))]
 public class DialogueTrigger : MonoBehaviour
@@ -7,6 +16,10 @@ public class DialogueTrigger : MonoBehaviour
     public UnityEngine.Video.VideoClip TriggerVideo;
     public GameObject interactPrompt;
 
+    
+    [Header("Choice Videos")]
+    public List<ChoiceVideoPair> choiceVideos;
+
     public AudioClip voiceClip1;
     public AudioClip voiceClip2;
     public AudioClip voiceClip3;
@@ -14,7 +27,6 @@ public class DialogueTrigger : MonoBehaviour
     public AudioSource voiceAudioSource;
     public bool playVoiceLines = true;
 
-     
     public string symbolName = "";
 
     private bool playerInRange = false;
@@ -48,14 +60,12 @@ public class DialogueTrigger : MonoBehaviour
                     !UIManager.Instance.dialoguePanel.activeInHierarchy &&
                     inkAsset != null)
                 {
-                    
                     if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() == "boat")
                     {
                         if (MemorySymbolManager.Instance == null || !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
                             return;
                     }
 
-                     
                     if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() != "boat")
                     {
                         if (MemorySymbolManager.Instance != null &&
@@ -65,8 +75,6 @@ public class DialogueTrigger : MonoBehaviour
 
                     if (interactPrompt != null)
                         interactPrompt.SetActive(false);
-
-                     
 
                     if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
                     {
@@ -96,7 +104,6 @@ public class DialogueTrigger : MonoBehaviour
                 UIManager.Instance.dialoguePanel != null &&
                 !UIManager.Instance.dialoguePanel.activeInHierarchy)
             {
-                 
                 if (!string.IsNullOrEmpty(symbolName) && MemorySymbolManager.Instance != null)
                 {
                     if (MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
@@ -149,5 +156,17 @@ public class DialogueTrigger : MonoBehaviour
             3 => voiceClip4,
             _ => null
         };
+    }
+
+     
+    public UnityEngine.Video.VideoClip GetVideoByTag(string tag)
+    {
+        if (choiceVideos == null) return null;
+        foreach (var cv in choiceVideos)
+        {
+            if (cv.videoTag.ToLower() == tag.ToLower())
+                return cv.videoClip;
+        }
+        return null;
     }
 }

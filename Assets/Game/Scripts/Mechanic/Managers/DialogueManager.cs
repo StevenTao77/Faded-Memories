@@ -16,7 +16,6 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     private Coroutine displayLineCoroutine;
 
-     
     private DialogueTrigger currentActiveTrigger;
 
     private bool isDialogueActive = false;
@@ -121,7 +120,28 @@ public class DialogueManager : MonoBehaviour
         if (currentStory.canContinue)
         {
             currentLineText = currentStory.Continue().Trim();
-            SetNameInDialogue();
+
+             
+            string speakerName = "";
+            string videoToPlay = "";
+
+            foreach (string tag in currentStory.currentTags)
+            {
+                if (tag.ToLower().StartsWith("video:"))
+                {
+                    videoToPlay = tag.Substring(6).Trim();  
+                }
+                else
+                {
+                    speakerName = tag;  
+                }
+            }
+
+             
+            if (UIManager.Instance != null && UIManager.Instance.dialogueNameText != null)
+            {
+                UIManager.Instance.dialogueNameText.text = speakerName;
+            }
 
             if (currentActiveTrigger != null)
             {
@@ -133,7 +153,25 @@ public class DialogueManager : MonoBehaviour
                 StopCoroutine(displayLineCoroutine);
             }
 
-            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+             
+            if (!string.IsNullOrEmpty(videoToPlay) && currentActiveTrigger != null)
+            {
+                UnityEngine.Video.VideoClip clip = currentActiveTrigger.GetVideoByTag(videoToPlay);
+                if (clip != null && GlobalCinematicManager.Instance != null)
+                {
+                    PlayCinematicMidDialogue(clip);
+                }
+                else
+                {
+                     
+                    displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+                }
+            }
+            else
+            {
+                 
+                displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+            }
         }
         else if (currentStory.currentChoices.Count == 0)
         {
@@ -145,20 +183,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void SetNameInDialogue()
+     
+    private void PlayCinematicMidDialogue(UnityEngine.Video.VideoClip clip)
     {
-        if (UIManager.Instance != null && UIManager.Instance.dialogueNameText != null)
+         
+        if (UIManager.Instance != null) UIManager.Instance.ToggleDialoguePanel(false);
+
+         
+        GlobalCinematicManager.Instance.PlayCinematic(clip, () =>
         {
-            if (currentStory.currentTags.Count > 0)
-            {
-                string nameTag = currentStory.currentTags[0];
-                UIManager.Instance.dialogueNameText.text = nameTag;
-            }
-            else
-            {
-                UIManager.Instance.dialogueNameText.text = "";
-            }
-        }
+            
+            if (UIManager.Instance != null) UIManager.Instance.ToggleDialoguePanel(true);
+            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+        });
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -217,10 +254,8 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-         
         if (currentActiveTrigger != null)
         {
-             
             if (!string.IsNullOrEmpty(currentActiveTrigger.symbolName))
             {
                 if (MemorySymbolManager.Instance != null)
@@ -234,12 +269,19 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
+        string lastTriggerName = currentActiveTrigger != null ? currentActiveTrigger.symbolName.ToLower() : "";
+
         isDialogueActive = false;
         currentActiveTrigger = null;
 
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ToggleDialoguePanel(false);
+        }
+
+        if (lastTriggerName == "boat")
+        {
+            SceneManager.LoadScene("MainMenu_UI");
         }
 
         SetPlayerControl(true);

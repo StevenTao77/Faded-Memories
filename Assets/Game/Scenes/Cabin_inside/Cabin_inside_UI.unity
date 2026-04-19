@@ -3927,6 +3927,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd5e2b99a9ca404fb5bd4585adc2e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MemoryUIRegister
+  boatIcon: {fileID: 1719116690}
+--- !u!1 &1719116690 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7319879466186569806, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
+  m_PrefabInstance: {fileID: 1719116687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1740391928
 GameObject:
   m_ObjectHideFlags: 0
