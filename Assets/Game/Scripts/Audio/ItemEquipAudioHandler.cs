@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TorchAudioHandler : MonoBehaviour
+public class ItemEquipAudioHandler : MonoBehaviour
 {
     public GameObject gramps;
     private void OnEnable()
