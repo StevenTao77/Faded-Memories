@@ -45,19 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundFXManager
   sounds:
-  - name: ForestAmbience
-    clip: {fileID: 8300000, guid: 749428170bd956149a4ede7c65dbb8b6, type: 3}
-    source: {fileID: 0}
-    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
-    volume: 1
-    volumeVariance: 0
-    pitch: 1
-    pitchVariance: 0
-    loop: 1
-    spatialize: 1
-    minDistance: 5
-    maxDistance: 25
-    spread: 180
   - name: NightSoundsWater
     clip: {fileID: 8300000, guid: ecafdfbdac807904f88c25869c862f49, type: 3}
     source: {fileID: 0}
@@ -149,3 +136,68 @@ MonoBehaviour:
     minDistance: 0
     maxDistance: 0
     spread: 0
+  - name: 'DefaultAmbience '
+    clip: {fileID: 8300000, guid: 660790bb19a97eb4581a05d90c81f369, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.2
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 1
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
+  - name: ForestAmbience
+    clip: {fileID: 8300000, guid: 749428170bd956149a4ede7c65dbb8b6, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.2
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 1
+    minDistance: 20
+    maxDistance: 25
+    spread: 180
+  - name: CliffAmbience
+    clip: {fileID: 8300000, guid: a6c623c3ca85e644b80fba553b48b9fb, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.2
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 1
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
+  - name: PondAmbience
+    clip: {fileID: 8300000, guid: ecafdfbdac807904f88c25869c862f49, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.2
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 1
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
+  - name: Water
+    clip: {fileID: 8300000, guid: b3e352e8585b26045ba59942563c5e30, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.02
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 1
+    minDistance: 5
+    maxDistance: 25
+    spread: 180

@@ -7,12 +7,17 @@ public class WaterSoundSpline : MonoBehaviour
     [SerializeField]
     private SplineContainer Spline;
     [SerializeField]
+    private GameObject player;
     private Transform Player;
     [SerializeField]
     private string ambienceName = "";
     private void Start()
     {
         SoundFXManager.instance.Fadein(ambienceName, 1f, gameObject);
+
+        player = GameObject.FindWithTag("MainCamera");
+
+        Player = player.transform;
     }
 
     void Update()
