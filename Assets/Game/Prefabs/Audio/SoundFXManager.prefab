@@ -110,3 +110,42 @@ MonoBehaviour:
     minDistance: 5
     maxDistance: 25
     spread: 180
+  - name: Equip
+    clip: {fileID: 8300000, guid: e8a71264dc163a049bcc503ae8d1997a, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 6247720340203659891, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    spatialize: 0
+    minDistance: 0
+    maxDistance: 0
+    spread: 0
+  - name: Unequip
+    clip: {fileID: 8300000, guid: 25d2eda1205b43247b5c18afe2e1b8bc, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 6247720340203659891, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    spatialize: 0
+    minDistance: 0
+    maxDistance: 0
+    spread: 0
+  - name: Flames
+    clip: {fileID: 8300000, guid: e7070bd8f03bdda40bd35da67b8f1937, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 6247720340203659891, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 0
+    minDistance: 0
+    maxDistance: 0
+    spread: 0

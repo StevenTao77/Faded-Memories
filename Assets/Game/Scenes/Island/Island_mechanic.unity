@@ -3448,6 +3448,7 @@ GameObject:
   - component: {fileID: 2669478036382219260}
   - component: {fileID: 5508580236482476384}
   - component: {fileID: 1634232887897435113}
+  - component: {fileID: 5508580236482476385}
   m_Layer: 0
   m_Name: torch
   m_TagString: Untagged
@@ -7359,6 +7360,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677392594821255890}
   m_Mesh: {fileID: 4749707353668628313, guid: 41287a0568c9469458a393e16bda0194, type: 3}
+--- !u!114 &5508580236482476385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677392594821255890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 012c9ce1890dae943921ba8cccecc5d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  gramps: {fileID: 5719517227283517575}
 --- !u!4 &5557453694952277496
 Transform:
   m_ObjectHideFlags: 0
