@@ -6,6 +6,15 @@ public class SceneController : MonoBehaviour
     [Header("Collision Settings")] 
     public int targetSceneIndexOnCollision;
      
+
+    //private void Start()
+    //{
+    //    Cursor.visible = true;
+    //    Cursor.lockState = CursorLockMode.None;
+    //}
+
+
+
     public void LoadScene(int sceneIndex)
     { 
         if (sceneIndex >= 0 && sceneIndex < SceneManager.sceneCountInBuildSettings)

@@ -113,6 +113,19 @@ public class DialogueManager : MonoBehaviour
         ContinueDialogue();
     }
 
+
+    private void ProcessEmptyLineOrType()
+    {
+        if (string.IsNullOrEmpty(currentLineText))
+        {
+            ContinueDialogue();
+        }
+        else
+        {
+            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+        }
+    }
+
     private void ContinueDialogue()
     {
         ClearUI();
@@ -121,7 +134,6 @@ public class DialogueManager : MonoBehaviour
         {
             currentLineText = currentStory.Continue().Trim();
 
-             
             string speakerName = "";
             string videoToPlay = "";
 
@@ -129,15 +141,14 @@ public class DialogueManager : MonoBehaviour
             {
                 if (tag.ToLower().StartsWith("video:"))
                 {
-                    videoToPlay = tag.Substring(6).Trim();  
+                    videoToPlay = tag.Substring(6).Trim();
                 }
                 else
                 {
-                    speakerName = tag;  
+                    speakerName = tag;
                 }
             }
 
-             
             if (UIManager.Instance != null && UIManager.Instance.dialogueNameText != null)
             {
                 UIManager.Instance.dialogueNameText.text = speakerName;
@@ -153,7 +164,6 @@ public class DialogueManager : MonoBehaviour
                 StopCoroutine(displayLineCoroutine);
             }
 
-             
             if (!string.IsNullOrEmpty(videoToPlay) && currentActiveTrigger != null)
             {
                 UnityEngine.Video.VideoClip clip = currentActiveTrigger.GetVideoByTag(videoToPlay);
@@ -163,14 +173,12 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-                     
-                    displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+                    ProcessEmptyLineOrType();
                 }
             }
             else
             {
-                 
-                displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+                ProcessEmptyLineOrType();
             }
         }
         else if (currentStory.currentChoices.Count == 0)
@@ -183,18 +191,22 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-     
+
     private void PlayCinematicMidDialogue(UnityEngine.Video.VideoClip clip)
     {
-         
         if (UIManager.Instance != null) UIManager.Instance.ToggleDialoguePanel(false);
 
-         
         GlobalCinematicManager.Instance.PlayCinematic(clip, () =>
         {
-            
-            if (UIManager.Instance != null) UIManager.Instance.ToggleDialoguePanel(true);
-            displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+            if (string.IsNullOrEmpty(currentLineText))
+            {
+                ContinueDialogue();
+            }
+            else
+            {
+                if (UIManager.Instance != null) UIManager.Instance.ToggleDialoguePanel(true);
+                displayLineCoroutine = StartCoroutine(TypeSentence(currentLineText));
+            }
         });
     }
 
@@ -252,24 +264,63 @@ public class DialogueManager : MonoBehaviour
         ContinueDialogue();
     }
 
+    //private void EndDialogue()
+    //{
+    //    if (currentActiveTrigger != null && !string.IsNullOrEmpty(currentActiveTrigger.symbolName))
+    //    {
+    //        if (MemorySymbolManager.Instance != null)
+    //        {
+    //            MemorySymbolManager.Instance.OnSymbolInteracted(currentActiveTrigger.symbolName);
+    //        }
+    //        else
+    //        {
+    //            Debug.LogError("[DialogueManager] can't find MemorySymbolManager.Instance");
+    //        }
+    //    }
+
+
+    //    string lastTriggerName = currentActiveTrigger?.symbolName?.ToLower() ?? "";
+
+    //    isDialogueActive = false;
+    //    currentActiveTrigger = null;
+
+    //    if (UIManager.Instance != null)
+    //    {
+    //        UIManager.Instance.ToggleDialoguePanel(false);
+    //    }
+
+    //    if (lastTriggerName == "boat")
+    //    {
+
+
+    //        Cursor.visible = true;
+    //        Cursor.lockState = CursorLockMode.None;
+    //        SceneManager.LoadScene("MainMenu_UI");
+    //        return;
+    //    }
+
+    //    SetPlayerControl(true);
+
+    //    Cursor.visible = false;
+    //    Cursor.lockState = CursorLockMode.Locked;
+    //}
+
+
     private void EndDialogue()
     {
-        if (currentActiveTrigger != null)
+        if (currentActiveTrigger != null && !string.IsNullOrEmpty(currentActiveTrigger.symbolName))
         {
-            if (!string.IsNullOrEmpty(currentActiveTrigger.symbolName))
+            if (MemorySymbolManager.Instance != null)
             {
-                if (MemorySymbolManager.Instance != null)
-                {
-                    MemorySymbolManager.Instance.OnSymbolInteracted(currentActiveTrigger.symbolName);
-                }
-                else
-                {
-                    Debug.LogError("[DialogueManager] can't find MemorySymbolManager.Instance£¡");
-                }
+                MemorySymbolManager.Instance.OnSymbolInteracted(currentActiveTrigger.symbolName);
+            }
+            else
+            {
+                Debug.LogError("[DialogueManager] can't find MemorySymbolManager.Instance");
             }
         }
 
-        string lastTriggerName = currentActiveTrigger != null ? currentActiveTrigger.symbolName.ToLower() : "";
+        string lastTriggerName = currentActiveTrigger?.symbolName?.ToLower() ?? "";
 
         isDialogueActive = false;
         currentActiveTrigger = null;
@@ -281,7 +332,18 @@ public class DialogueManager : MonoBehaviour
 
         if (lastTriggerName == "boat")
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+             
+            if (MemorySymbolManager.Instance != null) Destroy(MemorySymbolManager.Instance.gameObject);
+            if (UIManager.Instance != null) Destroy(UIManager.Instance.gameObject);
+
             SceneManager.LoadScene("MainMenu_UI");
+
+            
+            Destroy(gameObject);
+            return;
         }
 
         SetPlayerControl(true);

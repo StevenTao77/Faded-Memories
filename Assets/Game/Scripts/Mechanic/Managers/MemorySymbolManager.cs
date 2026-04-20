@@ -12,11 +12,21 @@ public class MemorySymbolManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
     }
+
+
+    //public void ResetProgress()
+    //{
+    //    // Assuming 'interactedSymbols' is a List<string> or HashSet<string>
+    //    if (interactedSymbols != null)
+    //    {
+    //        interactedSymbols.Clear();
+    //    }
+    //}
 
     public void RegisterMemoryRoot(Transform uiRoot, GameObject registeredBoat)
     {

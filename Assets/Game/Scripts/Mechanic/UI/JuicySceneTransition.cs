@@ -17,7 +17,7 @@ public class JuicySceneTransition : MonoBehaviour
     {
         if (transitionCanvasGroup != null)
         {
-            // Start completely black, then fade to clear
+            
             transitionCanvasGroup.alpha = 1f;
             StartCoroutine(FadeInRoutine());
         }
@@ -38,19 +38,19 @@ public class JuicySceneTransition : MonoBehaviour
             timer += Time.deltaTime;
             float progress = timer / fadeDuration;
 
-            // Evaluate the curve for a non-linear, juicy fade
+             
             transitionCanvasGroup.alpha = 1f - fadeCurve.Evaluate(progress);
             yield return null;
         }
 
         transitionCanvasGroup.alpha = 0f;
-        // Allow clicking on other UI elements again
+         
         transitionCanvasGroup.blocksRaycasts = false;
     }
 
     private IEnumerator FadeOutAndLoadRoutine(int sceneIndex)
     {
-        // Block screen clicks during transition
+         
         transitionCanvasGroup.blocksRaycasts = true;
         float timer = 0f;
 
@@ -63,9 +63,33 @@ public class JuicySceneTransition : MonoBehaviour
             yield return null;
         }
 
+         
         transitionCanvasGroup.alpha = 1f;
 
-        // Load the new scene strictly after the screen is fully black
+        
+
+        //if (MemorySymbolManager.Instance != null)
+        //{
+        //    MemorySymbolManager.Instance.ResetProgress();
+        //}
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ToggleDialoguePanel(false);
+            if (UIManager.Instance.dialogueText != null)
+            {
+                UIManager.Instance.dialogueText.text = "";
+            }
+        }
+
+        if (DialogueManager.Instance != null)
+        {
+            DialogueManager.Instance.SetPlayerControl(true);
+            DialogueManager.Instance.ForceEndDialogue();
+        }
+
+        Time.timeScale = 1f;
+        
         SceneManager.LoadScene(sceneIndex);
     }
 }

@@ -3606,6 +3606,10 @@ MonoBehaviour:
   sensitivityY: 2
   distance: 10
   pitchLimits: {x: -10, y: 60}
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  cameraRadius: 0.2
 --- !u!114 &675162961
 MonoBehaviour:
   m_ObjectHideFlags: 0
