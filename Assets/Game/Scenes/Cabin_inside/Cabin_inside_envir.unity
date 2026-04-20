@@ -343,7 +343,7 @@ PrefabInstance:
     - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: TriggerVideo
       value: 
-      objectReference: {fileID: 32900000, guid: beb56c486ec742a4ead2ab5aa4bf4e2d, type: 3}
+      objectReference: {fileID: 32900000, guid: 2f3fa40b8cb1c2047875454a0ee9211e, type: 3}
     - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: interactPrompt
       value: 
@@ -449,7 +449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de5f5d0197f7ae4987dba3a56f0cf20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MemorySymbolManager
-  boatSymbol: {fileID: 0}
 --- !u!1 &258659981
 GameObject:
   m_ObjectHideFlags: 0
