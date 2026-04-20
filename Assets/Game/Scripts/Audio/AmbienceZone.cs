@@ -8,6 +8,7 @@ public class AmbienceZone : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindWithTag("MainCamera");
         if (ambienceName == "")
         {
             Debug.Log("Missing name from" + gameObject);

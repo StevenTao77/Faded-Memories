@@ -77,6 +77,7 @@ public class CharacterSelect : MonoBehaviour
     public void HoverOnButton(int btnPos)
     {
         indicatorPos = btnPos;
+
         if (indicator != null)
         {
             indicator.gameObject.SetActive(true);

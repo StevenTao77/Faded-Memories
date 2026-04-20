@@ -111,7 +111,10 @@ public class IntroVideoManager : MonoBehaviour
     private IEnumerator CinematicEndSequence()
     {
         isTransitioning = true;
-         
+
+        SoundFXManager.instance.FadeOutAndStop("PianoBackground", fadeToBlackDuration);
+        SoundFXManager.instance.FadeOutAndStop("NightSoundsWater", fadeToBlackDuration);
+
         if (blackScreenCanvasGroup != null)
         {
             blackScreenCanvasGroup.gameObject.SetActive(true);

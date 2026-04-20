@@ -58,3 +58,55 @@ MonoBehaviour:
     minDistance: 5
     maxDistance: 25
     spread: 180
+  - name: NightSoundsWater
+    clip: {fileID: 8300000, guid: ecafdfbdac807904f88c25869c862f49, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.45
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 0
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
+  - name: PianoBackground
+    clip: {fileID: 8300000, guid: 3c583f4d1cbfdf5419cc6a9e0255b9ce, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2310506779475477679, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 0
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
+  - name: UiHover
+    clip: {fileID: 8300000, guid: 8d0f0578b9fb3c34c8bab965b152d49e, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 6247720340203659891, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    spatialize: 0
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
+  - name: UiClick
+    clip: {fileID: 8300000, guid: 52be58e3a84120f45aa428cc46b7bd93, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 6247720340203659891, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    spatialize: 0
+    minDistance: 5
+    maxDistance: 25
+    spread: 180
