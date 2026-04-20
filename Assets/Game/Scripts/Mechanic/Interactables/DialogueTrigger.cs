@@ -24,6 +24,8 @@ public class DialogueTrigger : MonoBehaviour
     public AudioClip voiceClip2;
     public AudioClip voiceClip3;
     public AudioClip voiceClip4;
+    public AudioClip voiceClip5;
+    public AudioClip voiceClip6;
     public AudioSource voiceAudioSource;
     public bool playVoiceLines = true;
 

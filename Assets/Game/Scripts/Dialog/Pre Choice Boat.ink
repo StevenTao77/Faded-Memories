@@ -7,10 +7,8 @@ I don't know what to do. #Old Man
 
 * [Flee Death]
     #video:Ending1
-    I must run away from this nightmare... #Old Man
     -> END
 
 * [Accept Death]
     #video:Ending2
-    I am ready to face the consequences. #Old Man
     -> END
