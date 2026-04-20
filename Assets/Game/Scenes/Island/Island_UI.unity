@@ -339,11 +339,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &724654847 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7319879466186569806, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-  m_PrefabInstance: {fileID: 7298427383207054662}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &835493436 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3913993134588162217, guid: cfd3e1c32aae7c548aff7ba0c6e8dd71, type: 3}
@@ -2059,80 +2054,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1056133326325422690, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1056133326325422690, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1056133326325422690, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1056133326325422690, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -268
-      objectReference: {fileID: 0}
-    - target: {fileID: 1056133326325422690, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -67
-      objectReference: {fileID: 0}
     - target: {fileID: 8296128200112635660, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
       propertyPath: m_Name
       value: Gameplay Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 9016781675813648431, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 9016781675813648431, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 9016781675813648431, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 9016781675813648431, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 867
-      objectReference: {fileID: 0}
-    - target: {fileID: 9016781675813648431, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -483
-      objectReference: {fileID: 0}
-    - target: {fileID: 9016781675813648431, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3648155435458691754, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7298427383207054664}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
---- !u!1 &7298427383207054663 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3648155435458691754, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
-  m_PrefabInstance: {fileID: 7298427383207054662}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7298427383207054664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7298427383207054663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fd5e2b99a9ca404fb5bd4585adc2e05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MemoryUIRegister
-  boatIcon: {fileID: 724654847}
 --- !u!1001 &7581551330421392443
 PrefabInstance:
   m_ObjectHideFlags: 0
