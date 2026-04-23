@@ -100,18 +100,35 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            
             playerInRange = true;
-
+            Debug.Log("1");
             if (interactPrompt != null && UIManager.Instance != null &&
                 UIManager.Instance.dialoguePanel != null &&
                 !UIManager.Instance.dialoguePanel.activeInHierarchy)
             {
+                Debug.Log("2");
+              
                 if (!string.IsNullOrEmpty(symbolName) && MemorySymbolManager.Instance != null)
                 {
+                    Debug.Log("3");
                     if (MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
+                    {
+                        Debug.Log("4");
+                        Debug.Log($"[DialogueTrigger] Player has already interacted with symbol '{symbolName}'. Dialogue will not be triggered again.");
                         return;
+                    }
+                       
                 }
 
+                if (!string.IsNullOrEmpty(symbolName) && symbolName == "Boat" && MemorySymbolManager.Instance != null && !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
+                {
+                    Debug.Log("5");
+                    Debug.Log("[DialogueTrigger] Player needs to interact with all symbols before accessing boat dialogue.");
+                    return;
+                }
+                   
+                Debug.Log("6");
                 interactPrompt.SetActive(true);
             }
         }

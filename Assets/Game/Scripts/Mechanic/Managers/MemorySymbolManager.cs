@@ -6,6 +6,7 @@ public class MemorySymbolManager : MonoBehaviour
     public static MemorySymbolManager Instance { get; private set; }
 
     private GameObject boatSymbol;
+   // private GameObject boatpromt;
     private Dictionary<string, List<GameObject>> symbolDict = new Dictionary<string, List<GameObject>>();
     private HashSet<string> interactedSymbols = new HashSet<string>();
     private bool allSymbolsInteracted = false;
@@ -99,6 +100,7 @@ public class MemorySymbolManager : MonoBehaviour
         {
             allSymbolsInteracted = true;
             if (boatSymbol != null) boatSymbol.SetActive(true);
+           // if (boatpromt != null) boatpromt.SetActive(true);
             Debug.Log("[MemoryManager] got it");
         }
     }

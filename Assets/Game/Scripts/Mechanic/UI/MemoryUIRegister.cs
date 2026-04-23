@@ -3,7 +3,6 @@ using UnityEngine;
 public class MemoryUIRegister : MonoBehaviour
 {
     [Header("UI References")]
-    [Tooltip("Drag the boat icon from this UI scene here")]
     public GameObject boatIcon;
 
     private void OnEnable()
