@@ -1766,6 +1766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   gramps: {fileID: 5719517227283517575}
+  hand: {fileID: 0}
 --- !u!1001 &1785421058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3475,7 +3476,7 @@ GameObject:
   - component: {fileID: 1634232887897435113}
   - component: {fileID: 5508580236482476385}
   m_Layer: 0
-  m_Name: torch
+  m_Name: Torch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7512,6 +7513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   gramps: {fileID: 5719517227283517575}
+  hand: {fileID: 8643927900710977259}
 --- !u!4 &5557453694952277496
 Transform:
   m_ObjectHideFlags: 0
