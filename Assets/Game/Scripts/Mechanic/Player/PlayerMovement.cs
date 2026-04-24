@@ -28,8 +28,8 @@ public class PlayerMovement : MonoBehaviour
         // Grab the Animator from the player model
         animator = GetComponentInChildren<Animator>();
 
-        // Double check to ensure physics won't tip the capsule over
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        // Double check to ensure physics won't tip the capsule over Edit: and so the gramps wont spin;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY;
     }
 
     private void Update()
