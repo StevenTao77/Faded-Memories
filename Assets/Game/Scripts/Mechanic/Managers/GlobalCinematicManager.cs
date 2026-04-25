@@ -17,6 +17,8 @@ public class GlobalCinematicManager : MonoBehaviour
     
     public VideoPlayer globalVideoPlayer;
 
+    //public GameObject GamePlayUI;
+
     [Header("Transition Settings")]
     public float fadeDuration = 0.8f;
 
@@ -48,6 +50,7 @@ public class GlobalCinematicManager : MonoBehaviour
             blackScreenCanvasGroup.alpha = 0f;
             blackScreenCanvasGroup.gameObject.SetActive(false);
         }
+        
     }
 
     private void Update()
@@ -55,6 +58,24 @@ public class GlobalCinematicManager : MonoBehaviour
         if (isPlaying && !isTransitioning && Input.GetKeyDown(KeyCode.Q))
         {
             StartCoroutine(EndCinematicSequence());
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
+        {
+            ToggleVideoPause();
+        }
+    }
+
+    private void ToggleVideoPause()
+    {
+        if (globalVideoPlayer == null) return;
+        if (globalVideoPlayer.isPlaying)
+        {
+            globalVideoPlayer.Pause();
+        }
+        else
+        {
+            globalVideoPlayer.Play();
         }
     }
 
@@ -69,6 +90,8 @@ public class GlobalCinematicManager : MonoBehaviour
         isPlaying = true;
         isTransitioning = true;
         onVideoCompleteCallback = onComplete;
+
+        if(UIManager.Instance != null && UIManager.Instance.GameplayUI != null) UIManager.Instance.GameplayUI.SetActive(false);
 
         //  Fade OUT to black
         if (blackScreenCanvasGroup != null)
@@ -116,6 +139,8 @@ public class GlobalCinematicManager : MonoBehaviour
             blackScreenCanvasGroup.gameObject.SetActive(true);
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 0f, 1f, fadeDuration));
         }
+        
+        if(UIManager.Instance != null && UIManager.Instance.GameplayUI != null) UIManager.Instance.GameplayUI.SetActive(true);
 
         //Stop video
         globalVideoPlayer.Stop();

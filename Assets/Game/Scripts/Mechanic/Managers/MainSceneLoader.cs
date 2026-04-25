@@ -7,8 +7,9 @@ public class MainSceneLoader : MonoBehaviour
     { 
 
         LoadSceneIfNotLoaded("Island_environment");
-        LoadSceneIfNotLoaded("Island_UI");
+       
         LoadSceneIfNotLoaded("Island_mechanic");
+         LoadSceneIfNotLoaded("Island_UI");
     }
 
     private void LoadSceneIfNotLoaded(string sceneName)

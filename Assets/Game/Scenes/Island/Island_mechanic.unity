@@ -5189,7 +5189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547db73e2e923b04087b820cf6259e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 5
+  moveSpeed: 50
   rotateSpeed: 20
   modelXOffset: 0
   camController: {fileID: 1411952136}

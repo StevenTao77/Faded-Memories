@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
       
     public GameObject choiceButtonPrefab;
 
+    public GameObject GameplayUI;
     private void Awake()
     {
          

@@ -625,6 +625,7 @@ MonoBehaviour:
   dialogueNameText: {fileID: 1244038152}
   choiceButtonContainer: {fileID: 1012707427}
   choiceButtonPrefab: {fileID: 8660200154477890449, guid: bc113ebc251cb1d428dca1e09977323b, type: 3}
+  GameplayUI: {fileID: 1365921861}
 --- !u!114 &945251765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,7 +638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae054db6823135b4e846621273fa0f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
-  gameplayCanvas: {fileID: 1365921861}
+  gameplayCanvas: {fileID: 0}
 --- !u!114 &945251766
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1969,6 +1969,7 @@ MonoBehaviour:
   dialogueNameText: {fileID: 185716760}
   choiceButtonContainer: {fileID: 185716762}
   choiceButtonPrefab: {fileID: 8660200154477890449, guid: bc113ebc251cb1d428dca1e09977323b, type: 3}
+  GameplayUI: {fileID: 1719116691}
 --- !u!4 &880685580
 Transform:
   m_ObjectHideFlags: 0
@@ -2947,6 +2948,11 @@ MonoBehaviour:
 --- !u!1 &1719116690 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7319879466186569806, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
+  m_PrefabInstance: {fileID: 1719116687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1719116691 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8296128200112635660, guid: f0ff93f107b4a054fa2f0458b57597ce, type: 3}
   m_PrefabInstance: {fileID: 1719116687}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1740391928
