@@ -504,8 +504,6 @@ MonoBehaviour:
   minIntensity: 3
   maxIntensity: 10
   timebetweenIntensity: 0.08
-  flicker: 1
-  pulsate: 0
 --- !u!1 &496070661
 GameObject:
   m_ObjectHideFlags: 0
