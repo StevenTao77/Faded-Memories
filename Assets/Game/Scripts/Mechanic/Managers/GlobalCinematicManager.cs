@@ -26,6 +26,8 @@ public class GlobalCinematicManager : MonoBehaviour
     private bool isPlaying = false;
     private bool isTransitioning = false;
 
+    public bool IsPlaying => isPlaying;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -69,6 +71,7 @@ public class GlobalCinematicManager : MonoBehaviour
     private void ToggleVideoPause()
     {
         if (globalVideoPlayer == null) return;
+
         if (globalVideoPlayer.isPlaying)
         {
             globalVideoPlayer.Pause();
@@ -77,6 +80,17 @@ public class GlobalCinematicManager : MonoBehaviour
         {
             globalVideoPlayer.Play();
         }
+
+        // Force GameplayUI to stay hidden when ESC is pressed during a cinematic
+        if (UIManager.Instance != null && UIManager.Instance.GameplayUI != null)
+        {
+            UIManager.Instance.GameplayUI.SetActive(false);
+        }
+        else
+        {
+                        Debug.Log("[GlobalCinematicManager] UIManager or GameplayUI reference is missing. Cannot hide GameplayUI during cinematic.");
+        
+    }
     }
 
     public void PlayCinematic(VideoClip clip, Action onComplete)

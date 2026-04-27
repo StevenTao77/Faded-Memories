@@ -13,15 +13,12 @@ public class SoundFXManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance != null && instance != this)
         {
-            instance = this;
+            Destroy(instance.gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        
+        instance = this;
 
         DontDestroyOnLoad(gameObject);
     }
@@ -99,6 +96,8 @@ public class SoundFXManager : MonoBehaviour
 
         while (time < duration)
         {
+
+            if (source == null) yield break;
             source.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
             time += Time.deltaTime;
             yield return null;
