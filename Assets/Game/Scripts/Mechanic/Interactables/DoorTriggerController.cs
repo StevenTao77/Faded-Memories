@@ -1,36 +1,44 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DoorTriggerController : MonoBehaviour
+public class DoorTriggerController : MonoBehaviour , IInteractable
 {
     
     public Animator doorAnimator;
+    public GameObject promptVisual;
+
+    private bool isOpen = false;
+   
+
+    public UnityEvent onInteract;
+
+    public KeyCode InteractKey => KeyCode.E;
 
 
-
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        if (other.CompareTag("Player"))
-        {
 
-            if (doorAnimator != null)
-            {
-                doorAnimator.SetBool("isOpen", true);
-                Debug.Log("Cube enter opendoor ! " + doorAnimator.GetBool("isOpen"));
-            }
-        }
+        if (promptVisual != null) promptVisual.SetActive(false);
+    }
+    public void Interact()
+    {
+        
+        onInteract?.Invoke();
     }
 
-
-
-    private void OnTriggerExit(Collider other)
+    public void TogglePrompt(bool show)
     {
-        if (other.CompareTag("Player"))
+        if (promptVisual != null)
         {
-            if (doorAnimator != null)
-            {
-                doorAnimator.SetBool("isOpen", false);
-                Debug.Log("Cube leave closedoor ! " + doorAnimator.GetBool("isOpen"));
-            }
+            promptVisual.SetActive(show);
+        }
+
+        isOpen = !isOpen;
+
+        if (doorAnimator != null)
+        {
+            doorAnimator.SetBool("isOpen", show);
         }
     }
+ 
 }

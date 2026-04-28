@@ -10,13 +10,14 @@ public class ChoiceVideoPair
 }
 
 [RequireComponent(typeof(BoxCollider))]
-public class DialogueTrigger : MonoBehaviour
+public class DialogueTrigger : MonoBehaviour, IInteractable
 {
     public TextAsset inkAsset;
     public UnityEngine.Video.VideoClip TriggerVideo;
     public GameObject interactPrompt;
 
     
+
     [Header("Choice Videos")]
     public List<ChoiceVideoPair> choiceVideos;
 
@@ -30,9 +31,13 @@ public class DialogueTrigger : MonoBehaviour
     public bool playVoiceLines = true;
 
     public string symbolName = "";
+     
+    public KeyCode InteractKey => KeyCode.G;
 
     private bool playerInRange = false;
     private int currentDialogueLine = 0;
+
+    
 
     private void Start()
     {
@@ -51,100 +56,75 @@ public class DialogueTrigger : MonoBehaviour
             }
         }
     }
-
-    private void Update()
+    //encapsulate all the conditions that must be met for the player to interact with this trigger
+    private bool CanInteract()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.G))
+        if (DialogueManager.Instance == null || UIManager.Instance == null) return false;
+        if (UIManager.Instance.dialoguePanel != null && UIManager.Instance.dialoguePanel.activeInHierarchy) return false;
+        if (inkAsset == null) return false;
+
+        if (!string.IsNullOrEmpty(symbolName))
         {
-            if (DialogueManager.Instance != null && UIManager.Instance != null)
+            if (symbolName.ToLower() == "boat")
             {
-                if (UIManager.Instance.dialoguePanel != null &&
-                    !UIManager.Instance.dialoguePanel.activeInHierarchy &&
-                    inkAsset != null)
+                if (MemorySymbolManager.Instance == null || !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
                 {
-                    if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() == "boat")
-                    {
-                        if (MemorySymbolManager.Instance == null || !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
-                            return;
-                    }
-
-                    if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() != "boat")
-                    {
-                        if (MemorySymbolManager.Instance != null &&
-                            MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
-                            return;
-                    }
-
-                    if (interactPrompt != null)
-                        interactPrompt.SetActive(false);
-
-                    if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
-                    {
-                        DialogueManager.Instance.SetPlayerControl(false);
-
-                        GlobalCinematicManager.Instance.PlayCinematic(TriggerVideo, () =>
-                        {
-                            DialogueManager.Instance.StartDialogue(inkAsset, this);
-                        });
-                    }
-                    else
-                    {
-                        DialogueManager.Instance.StartDialogue(inkAsset, this);
-                    }
+                    Debug.Log("[DialogueTrigger] Locked: Player needs to interact with all symbols first.");
+                    return false;
+                }
+            }
+            else
+            {
+                if (MemorySymbolManager.Instance != null && MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
+                {
+                    Debug.Log($"[DialogueTrigger] Locked: Player has already interacted with '{symbolName}'.");
+                    return false; 
                 }
             }
         }
+
+          return true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void  TogglePrompt(bool show)
     {
-        if (other.CompareTag("Player"))
+        if (interactPrompt != null)
         {
-            
-            playerInRange = true;
-            Debug.Log("1");
-            if (interactPrompt != null && UIManager.Instance != null &&
-                UIManager.Instance.dialoguePanel != null &&
-                !UIManager.Instance.dialoguePanel.activeInHierarchy)
+            Debug.Log("CanInteract() result is: " + CanInteract());
+            if (show && CanInteract())
             {
-                Debug.Log("2");
-              
-                if (!string.IsNullOrEmpty(symbolName) && MemorySymbolManager.Instance != null)
-                {
-                    Debug.Log("3");
-                    if (MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
-                    {
-                        Debug.Log("4");
-                        Debug.Log($"[DialogueTrigger] Player has already interacted with symbol '{symbolName}'. Dialogue will not be triggered again.");
-                        return;
-                    }
-                       
-                }
-
-                if (!string.IsNullOrEmpty(symbolName) && symbolName == "Boat" && MemorySymbolManager.Instance != null && !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
-                {
-                    Debug.Log("5");
-                    Debug.Log("[DialogueTrigger] Player needs to interact with all symbols before accessing boat dialogue.");
-                    return;
-                }
-                   
-                Debug.Log("6");
                 interactPrompt.SetActive(true);
             }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-
-            if (interactPrompt != null)
+            else
+            {
                 interactPrompt.SetActive(false);
+            }
+        }
+            
+    }
+
+    public void Interact()
+    {
+        if (!CanInteract()) return; 
+
+        if(interactPrompt != null)
+            interactPrompt.SetActive(false);
+
+        if(TriggerVideo != null && GlobalCinematicManager.Instance != null)
+        {
+            DialogueManager.Instance.SetPlayerControl(false);
+             GlobalCinematicManager.Instance.PlayCinematic(TriggerVideo, () =>
+             {
+                DialogueManager.Instance.StartDialogue(inkAsset, this);
+             });
+        }
+        else
+        {
+            DialogueManager.Instance.StartDialogue(inkAsset, this);
         }
     }
 
+     
     public void ResetLineCounter()
     {
         currentDialogueLine = 0;

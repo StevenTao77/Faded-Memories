@@ -5889,43 +5889,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 991164171794469107, guid: 03443d0d376197f4da1b566471c455af, type: 3}
   m_PrefabInstance: {fileID: 747844876}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &299493313
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 128
-  m_Height: 128
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1 &304136970
 GameObject:
   m_ObjectHideFlags: 0
@@ -6205,9 +6168,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 96f5eec0943306d49b243c3e4f64d04a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 309294201}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 96f5eec0943306d49b243c3e4f64d04a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 309294200}
   m_SourcePrefab: {fileID: 100100000, guid: 96f5eec0943306d49b243c3e4f64d04a, type: 3}
 --- !u!4 &309294197 stripped
 Transform:
@@ -6240,22 +6200,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9508982, y: 1.7971251, z: 1.274444}
   m_Center: {x: 0.024556786, y: 0.4640757, z: -0.037430234}
---- !u!114 &309294200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309294198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72ea9fc5f4e1df4eba4e2c6454664d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UniversalInteractable
-  ePromptVisual: {fileID: 1614378960}
-  onInteract:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &309294201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6269,7 +6213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPickup
   itemName: Axe
-  holdDuration: 0
+  promptVisual: {fileID: 1614378960}
 --- !u!65 &342993917
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6871,43 +6815,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03888063, y: 0.022902409, z: 0.0229024}
   m_Center: {x: 0.0000004805699, y: -0.00053198065, z: -0.0023103566}
---- !u!84 &460456915
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 256
-  m_Height: 256
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &469488461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9820,9 +9727,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e809a9016dd6e484d80e824dcac5e512, type: 3}
       insertIndex: -1
       addedObject: {fileID: 729211051}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e809a9016dd6e484d80e824dcac5e512, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 729211052}
   m_SourcePrefab: {fileID: 100100000, guid: e809a9016dd6e484d80e824dcac5e512, type: 3}
 --- !u!4 &729211048 stripped
 Transform:
@@ -9847,7 +9751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPickup
   itemName: torch
-  holdDuration: 0
+  promptVisual: {fileID: 1784763505}
 --- !u!65 &729211051
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9869,22 +9773,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.08859235, y: 0.08412453, z: 0.18889612}
   m_Center: {x: 0.0066150352, y: -0.018327443, z: -0.033659067}
---- !u!114 &729211052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 729211049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72ea9fc5f4e1df4eba4e2c6454664d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UniversalInteractable
-  ePromptVisual: {fileID: 1784763505}
-  onInteract:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &744234342
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10001,9 +9889,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5794636182191788083, guid: 03443d0d376197f4da1b566471c455af, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1493495695}
-    - targetCorrespondingSourceObject: {fileID: 5794636182191788083, guid: 03443d0d376197f4da1b566471c455af, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1493495694}
     - targetCorrespondingSourceObject: {fileID: 6280169306640998150, guid: 03443d0d376197f4da1b566471c455af, type: 3}
       insertIndex: -1
       addedObject: {fileID: 747844897}
@@ -11507,7 +11392,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 460456915}
+        m_Texture: {fileID: 1805110009}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -11530,7 +11415,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DetailColor: {r: 0.51186275, g: 0.51186275, b: 0.51186275, a: 0}
     - _DetailData: {r: 0.5, g: 4, b: -0.5, a: 0}
-    - _DetailWindDirection: {r: 0.10285904, g: 0, b: 0, a: 0}
+    - _DetailWindDirection: {r: 0.024380144, g: 0, b: 0, a: 0}
     - _DistanceData: {r: 0, g: 5, b: 1, a: 1}
     - _FogOfWarCenter: {r: 0, g: 0, b: 0, a: 1}
     - _FogOfWarCenterAdjusted: {r: 0, g: 0, b: 0, a: 1}
@@ -11543,7 +11428,7 @@ Material:
     - _ShadowData: {r: 0.5, g: 0, b: 250, a: 0}
     - _SpecularColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
     - _SunDir: {r: 0.3213938, g: 0.76604444, b: -0.5566705, a: 0}
-    - _WindDirection: {r: 0.10285904, g: 0, b: 0, a: 0}
+    - _WindDirection: {r: 0.024380144, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!4 &1021016731 stripped
@@ -14509,7 +14394,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: -2.22, y: 0, z: 3.05}
---- !u!114 &1493495694
+--- !u!114 &1493495695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14518,10 +14403,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 89733778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72ea9fc5f4e1df4eba4e2c6454664d5, type: 3}
+  m_Script: {fileID: 11500000, guid: bff17e8dc3ac0c1448c731d77b4a2479, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UniversalInteractable
-  ePromptVisual: {fileID: 558494296}
+  m_EditorClassIdentifier: Assembly-CSharp::DoorTriggerController
+  doorAnimator: {fileID: 273809396}
+  promptVisual: {fileID: 558494296}
   onInteract:
     m_PersistentCalls:
       m_Calls:
@@ -14537,19 +14423,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1493495695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 89733778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff17e8dc3ac0c1448c731d77b4a2479, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DoorTriggerController
-  doorAnimator: {fileID: 273809396}
 --- !u!114 &1493495696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17846,6 +17719,43 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.880803, y: 1, z: 4.604449}
   m_Center: {x: -1.4155774, y: 1.0654891e-10, z: -0.35466072}
+--- !u!84 &1805110009
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 6
+  m_Width: 256
+  m_Height: 256
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_UseDynamicScaleExplicit: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &1805159635
 GameObject:
   m_ObjectHideFlags: 0
@@ -19937,6 +19847,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &2033458894
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 6
+  m_Width: 128
+  m_Height: 128
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_UseDynamicScaleExplicit: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &2053064461
 GameObject:
   m_ObjectHideFlags: 0
@@ -20474,7 +20421,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967293
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 299493313}
+  m_TargetTexture: {fileID: 2033458894}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0

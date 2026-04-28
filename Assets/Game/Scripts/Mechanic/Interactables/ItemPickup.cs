@@ -1,39 +1,36 @@
 using UnityEngine;
 
-public class ItemPickup : MonoBehaviour
+public class ItemPickup : MonoBehaviour, IInteractable
 {
     [Header("Basic Setting")]
     public string itemName = "";
-    public float holdDuration = 1.0f;
 
-    private float currentHoldTime = 0f;
-    private bool isPlayerInZone = false;
+    [Header("UI Prompt")]
+     
+    public GameObject promptVisual;
+    public KeyCode InteractKey => KeyCode.E;
 
-    void Update()
+    private void Start()
     {
-        if (isPlayerInZone)
-        {
-            if (Input.GetKey(KeyCode.E))
-            {
-                currentHoldTime += Time.deltaTime;
+          
+        if (promptVisual != null) promptVisual.SetActive(false);
+    }
+    public void Interact()
+    {
+        PickUpSuccess();
+    }
 
-                if (currentHoldTime >= holdDuration)
-                {
-                    PickUpSuccess();
-                }
-            }
-            else
-            {
-                // Reset timer if player lets go of the key
-                currentHoldTime = 0f;
-            }
+    public void TogglePrompt(bool show)
+    {
+        if (promptVisual != null)
+        {
+            promptVisual.SetActive(show);
         }
     }
 
     void PickUpSuccess()
     {
-        Debug.Log("Pickup success: " + itemName);
-
+                Debug.Log("Pickup success: " + itemName);
         if (InventoryManager.Instance != null)
         {
             // Try to find the item image from EquipmentManager
@@ -51,36 +48,11 @@ public class ItemPickup : MonoBehaviour
                     }
                 }
             }
-
             InventoryManager.Instance.AddItem(itemName, itemImage);
         }
-
         Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerInZone = true;
-        }
-        else
-        {
-            Debug.LogAssertion("Can't find Player Tag!");
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerInZone = false;
-            currentHoldTime = 0f;
-        }
-        else
-        {
-             Debug.LogAssertion("Can't find Player Tag!");
-        }
     
-    }
+}
+    
+   
 }
