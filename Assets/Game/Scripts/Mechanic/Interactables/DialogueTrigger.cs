@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
- 
+
 [System.Serializable]
 public class ChoiceVideoPair
 {
@@ -16,6 +17,7 @@ public class DialogueTrigger : MonoBehaviour
     public UnityEngine.Video.VideoClip TriggerVideo;
     public GameObject interactPrompt;
 
+    public AudioMixer mixer;
     
     [Header("Choice Videos")]
     public List<ChoiceVideoPair> choiceVideos;
@@ -67,7 +69,7 @@ public class DialogueTrigger : MonoBehaviour
                         if (MemorySymbolManager.Instance == null || !MemorySymbolManager.Instance.AreAllSymbolsInteracted())
                             return;
                     }
-
+                    
                     if (!string.IsNullOrEmpty(symbolName) && symbolName.ToLower() != "boat")
                     {
                         if (MemorySymbolManager.Instance != null &&
@@ -81,10 +83,11 @@ public class DialogueTrigger : MonoBehaviour
                     if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
                     {
                         DialogueManager.Instance.SetPlayerControl(false);
-
+                        mixer.SetFloat("masterVolume", Mathf.Log10(0.0001f) * 20f);
                         GlobalCinematicManager.Instance.PlayCinematic(TriggerVideo, () =>
                         {
                             DialogueManager.Instance.StartDialogue(inkAsset, this);
+                            mixer.SetFloat("masterVolume", Mathf.Log10(PlayerPrefs.GetFloat("masterVolume")) * 20f);
                         });
                     }
                     else

@@ -317,6 +317,10 @@ PrefabInstance:
       value: -110.865
       objectReference: {fileID: 0}
     - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    - target: {fileID: 5620478147470897502, guid: 8c2255218f827b142bfa9cf1753590c6, type: 3}
       propertyPath: inkAsset
       value: 
       objectReference: {fileID: 4900000, guid: 2369c16f9df7fda4899ea18ee1e75c0a, type: 3}
