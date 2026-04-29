@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
- 
 [System.Serializable]
 public class ChoiceVideoPair
 {
@@ -10,13 +9,11 @@ public class ChoiceVideoPair
 }
 
 [RequireComponent(typeof(BoxCollider))]
-public class DialogueTrigger : MonoBehaviour, IInteractable
+public class DialogueTrigger : BaseInteractable
 {
     public TextAsset inkAsset;
     public UnityEngine.Video.VideoClip TriggerVideo;
     public GameObject interactPrompt;
-
-    
 
     [Header("Choice Videos")]
     public List<ChoiceVideoPair> choiceVideos;
@@ -25,22 +22,20 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
     public AudioClip voiceClip2;
     public AudioClip voiceClip3;
     public AudioClip voiceClip4;
-    public AudioClip voiceClip5;
-    public AudioClip voiceClip6;
+
     public AudioSource voiceAudioSource;
     public bool playVoiceLines = true;
 
     public string symbolName = "";
-     
-    public KeyCode InteractKey => KeyCode.G;
-
-    private bool playerInRange = false;
-    private int currentDialogueLine = 0;
 
     
+    public override KeyCode InteractKey => KeyCode.G;
 
-    private void Start()
+    private int currentDialogueLine = 0;
+
+    protected override void Start()
     {
+        base.Start();  
         GetComponent<Collider>().isTrigger = true;
 
         if (interactPrompt != null)
@@ -56,7 +51,7 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
             }
         }
     }
-    //encapsulate all the conditions that must be met for the player to interact with this trigger
+
     private bool CanInteract()
     {
         if (DialogueManager.Instance == null || UIManager.Instance == null) return false;
@@ -78,45 +73,37 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
                 if (MemorySymbolManager.Instance != null && MemorySymbolManager.Instance.HasInteractedWithSymbol(symbolName))
                 {
                     Debug.Log($"[DialogueTrigger] Locked: Player has already interacted with '{symbolName}'.");
-                    return false; 
+                    return false;
                 }
             }
         }
-
-          return true;
+        return true;
     }
 
-    public void  TogglePrompt(bool show)
+    public override void TogglePrompt(bool show)
     {
+         
         if (interactPrompt != null)
         {
             Debug.Log("CanInteract() result is: " + CanInteract());
-            if (show && CanInteract())
-            {
-                interactPrompt.SetActive(true);
-            }
-            else
-            {
-                interactPrompt.SetActive(false);
-            }
+            interactPrompt.SetActive(show && CanInteract());
         }
-            
     }
 
-    public void Interact()
+    public override void Interact()
     {
-        if (!CanInteract()) return; 
+        if (!CanInteract()) return;
 
-        if(interactPrompt != null)
+        if (interactPrompt != null)
             interactPrompt.SetActive(false);
 
-        if(TriggerVideo != null && GlobalCinematicManager.Instance != null)
+        if (TriggerVideo != null && GlobalCinematicManager.Instance != null)
         {
             DialogueManager.Instance.SetPlayerControl(false);
-             GlobalCinematicManager.Instance.PlayCinematic(TriggerVideo, () =>
-             {
+            GlobalCinematicManager.Instance.PlayCinematic(TriggerVideo, () =>
+            {
                 DialogueManager.Instance.StartDialogue(inkAsset, this);
-             });
+            });
         }
         else
         {
@@ -124,7 +111,6 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
         }
     }
 
-     
     public void ResetLineCounter()
     {
         currentDialogueLine = 0;
@@ -141,7 +127,6 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
             voiceAudioSource.clip = voiceClip;
             voiceAudioSource.Play();
         }
-
         currentDialogueLine++;
     }
 
@@ -157,7 +142,6 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
         };
     }
 
-     
     public UnityEngine.Video.VideoClip GetVideoByTag(string tag)
     {
         if (choiceVideos == null) return null;
