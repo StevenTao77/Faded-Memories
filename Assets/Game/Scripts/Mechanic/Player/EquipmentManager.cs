@@ -16,7 +16,6 @@ public class EquipmentManager : MonoBehaviour
 
     private void Start()
     {
-         
         foreach (EquipableItem item in allHandItems)
         {
             if (item.handModel != null)
@@ -25,7 +24,6 @@ public class EquipmentManager : MonoBehaviour
             }
         }
 
-         
         if (InventoryManager.Instance != null && !string.IsNullOrEmpty(InventoryManager.Instance.currentlyEquippedItem))
         {
             string lastItem = InventoryManager.Instance.currentlyEquippedItem;
@@ -35,30 +33,37 @@ public class EquipmentManager : MonoBehaviour
 
     private void Update()
     {
-         
-        if (Input.GetKeyDown(KeyCode.Alpha1)) TryEquipItem(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) TryEquipItem(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) TryEquipItem(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) TryEquipItem(3);
+     
+        if (Input.GetKeyDown(KeyCode.Alpha1)) TryEquipSpecificItem("torch");
+        if (Input.GetKeyDown(KeyCode.Alpha2)) TryEquipSpecificItem("Axe");
 
         if (Input.GetKeyDown(KeyCode.X)) UnequipAll();
     }
-
-    private void TryEquipItem(int slotIndex)
+     
+    private void TryEquipSpecificItem(string targetItemName)
     {
         if (InventoryManager.Instance == null) return;
 
+        bool hasItem = false;
         List<InventoryItem> currentInv = InventoryManager.Instance.inventoryItems;
-
-        if (slotIndex >= 0 && slotIndex < currentInv.Count)
+         
+        foreach (InventoryItem item in currentInv)
         {
-            string targetItemName = currentInv[slotIndex].itemName;
-       EquipByName(targetItemName);
+            if (item.itemName == targetItemName)
+            {
+                hasItem = true;
+                break;
+            }
+        }
+
+        if (hasItem)
+        {
+            EquipByName(targetItemName);
         }
         else
         {
-            Debug.Log("Slot " + (slotIndex + 1) + " is empty!");
-}
+            Debug.Log("You do not have " + targetItemName + " in your inventory!");
+        }
     }
 
     public void EquipByName(string targetName)
@@ -66,18 +71,20 @@ public class EquipmentManager : MonoBehaviour
         bool found = false;
         foreach (EquipableItem item in allHandItems)
         {
-            if (item.itemName == targetName && !item.handModel.activeSelf  )
+            if (item.itemName == targetName && !item.handModel.activeSelf)
             {
                 item.handModel.SetActive(true);
                 found = true;
             }
             else
             {
-                item.handModel.SetActive(false);
+                if (item.handModel != null)
+                {
+                    item.handModel.SetActive(false);
+                }
             }
         }
 
-         
         if (found && InventoryManager.Instance != null)
         {
             InventoryManager.Instance.currentlyEquippedItem = targetName;
@@ -88,10 +95,12 @@ public class EquipmentManager : MonoBehaviour
     {
         foreach (EquipableItem item in allHandItems)
         {
-            item.handModel.SetActive(false);
+            if (item.handModel != null)
+            {
+                item.handModel.SetActive(false);
+            }
         }
 
-        
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.currentlyEquippedItem = "";

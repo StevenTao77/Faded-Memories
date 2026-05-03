@@ -31,6 +31,7 @@ public class MonsterManager : MonoBehaviour
     private Vector3 initialPosition;
     private float waitTimer;
     private bool isChasingOrFleeing = false;
+    private float fleeRecalculateTimer = 0f;
 
     private void OnEnable()
     {
@@ -46,14 +47,13 @@ public class MonsterManager : MonoBehaviour
     {
         InitializeMonsterData();
 
-        // Re-find player and torch if references are lost after scene transition
         if (playerTransform == null || playerTorch == null)
         {
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {
                 playerTransform = player.transform;
-                 
+
                 Transform torchTransform = FindChildRecursively(player.transform, torchObjectName);
 
                 if (torchTransform != null)
@@ -65,13 +65,9 @@ public class MonsterManager : MonoBehaviour
                     Debug.LogWarning($"MonsterManager: Player found, but child named '{torchObjectName}' is missing. Torch detection will fail.");
                 }
             }
-            else
-            {
-                Debug.LogWarning("MonsterManager: Cannot find object with 'Player' tag after scene load.");
-            }
         }
     }
-     
+
     private Transform FindChildRecursively(Transform parent, string nameToFind)
     {
         foreach (Transform child in parent)
@@ -123,15 +119,6 @@ public class MonsterManager : MonoBehaviour
                     }
                 }
             }
-
-            if (fogCollider == null)
-            {
-                Debug.LogWarning("MonsterManager: Fog BoxCollider not found on monster's children.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("MonsterManager: Cannot find Monster in the scene by tag. (This is normal if the current scene doesn't have a monster)");
         }
     }
 
@@ -142,7 +129,6 @@ public class MonsterManager : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(monsterAgent.transform.position, playerTransform.position);
 
-        // Check if the torch is active in the hierarchy
         bool isTorchOn = playerTorch != null && playerTorch.activeInHierarchy;
 
         bool isPlayerInFog = false;
@@ -196,13 +182,69 @@ public class MonsterManager : MonoBehaviour
         isChasingOrFleeing = true;
         monsterAgent.speed = fleeSpeed;
 
-        Vector3 directionAway = (monsterAgent.transform.position - playerTransform.position).normalized;
-        Vector3 avoidTargetPosition = monsterAgent.transform.position + directionAway * fleeDistance;
+        fleeRecalculateTimer -= Time.deltaTime;
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(avoidTargetPosition, out hit, fleeDistance, NavMesh.AllAreas))
+        // Optimize performance: Only recalculate escape route every 0.5 seconds
+        if (fleeRecalculateTimer > 0f && monsterAgent.hasPath) return;
+
+        fleeRecalculateTimer = 0.5f;
+
+        Vector3 bestEscapePoint = monsterAgent.transform.position;
+        float maxDistanceToPlayer = 0f;
+        bool foundValidEscape = false;
+
+        // Sample 8 directions in a circle around the monster
+        for (int i = 0; i < 8; i++)
         {
-            monsterAgent.SetDestination(hit.position);
+            float angle = i * 45f;
+            // Get direction away from player, then rotate it by current angle
+            Vector3 baseDirAway = (monsterAgent.transform.position - playerTransform.position).normalized;
+            Vector3 checkDirection = Quaternion.Euler(0, angle, 0) * baseDirAway;
+
+            Vector3 potentialPosition = monsterAgent.transform.position + checkDirection * fleeDistance;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(potentialPosition, out hit, fleeDistance * 0.5f, NavMesh.AllAreas))
+            {
+                float distToPlayerFromHit = Vector3.Distance(hit.position, playerTransform.position);
+                float currentDistToPlayer = Vector3.Distance(monsterAgent.transform.position, playerTransform.position);
+
+                // Make sure this new point is actually further away than where we stand now
+                if (distToPlayerFromHit > currentDistToPlayer)
+                {
+                    // CRITICAL FIX: Simulate the path to make sure it's not blocked by a wall
+                    NavMeshPath path = new NavMeshPath();
+                    if (monsterAgent.CalculatePath(hit.position, path))
+                    {
+                        // PathComplete means we can physically walk there without getting stuck
+                        if (path.status == NavMeshPathStatus.PathComplete)
+                        {
+                            // Keep the point that gets us the FURTHEST away from the player
+                            if (distToPlayerFromHit > maxDistanceToPlayer)
+                            {
+                                maxDistanceToPlayer = distToPlayerFromHit;
+                                bestEscapePoint = hit.position;
+                                foundValidEscape = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+         
+        if (foundValidEscape)
+        {
+            monsterAgent.SetDestination(bestEscapePoint);
+        }
+        else
+        {
+            // Extreme Fallback: If completely cornered by walls AND player, try to slip to the side
+            Vector3 slipPastPosition = monsterAgent.transform.position + (monsterAgent.transform.right * fleeDistance * 0.5f);
+            NavMeshHit fallbackHit;
+            if (NavMesh.SamplePosition(slipPastPosition, out fallbackHit, fleeDistance * 0.5f, NavMesh.AllAreas))
+            {
+                monsterAgent.SetDestination(fallbackHit.position);
+            }
         }
     }
 

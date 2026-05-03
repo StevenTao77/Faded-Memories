@@ -9,6 +9,21 @@ public class ItemPickup : MonoBehaviour
     private float currentHoldTime = 0f;
     private bool isPlayerInZone = false;
 
+    void Start()
+    {
+        if (InventoryManager.Instance != null)
+        {
+            foreach (InventoryItem item in InventoryManager.Instance.inventoryItems)
+            {
+                if (item.itemName.ToLower() == itemName.ToLower())
+                {
+                    gameObject.SetActive(false);
+                    break;
+                }
+            }
+        }
+    }
+
     void Update()
     {
         if (isPlayerInZone)
@@ -24,7 +39,7 @@ public class ItemPickup : MonoBehaviour
             }
             else
             {
-                // Reset timer if player lets go of the key
+                 
                 currentHoldTime = 0f;
             }
         }
@@ -35,11 +50,10 @@ public class ItemPickup : MonoBehaviour
         Debug.Log("Pickup success: " + itemName);
 
         if (InventoryManager.Instance != null)
-        {
-            // Try to find the item image from EquipmentManager
+        { 
             Texture2D itemImage = null;
             EquipmentManager equipmentManager = FindObjectOfType<EquipmentManager>();
-            
+
             if (equipmentManager != null)
             {
                 foreach (EquipableItem item in equipmentManager.allHandItems)
@@ -79,8 +93,7 @@ public class ItemPickup : MonoBehaviour
         }
         else
         {
-             Debug.LogAssertion("Can't find Player Tag!");
+            Debug.LogAssertion("Can't find Player Tag!");
         }
-    
     }
 }
