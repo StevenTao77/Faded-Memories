@@ -488,6 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0dc25681e917c0408003156f2f481dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuMusic
+  mixer: {fileID: 24100000, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
   music: {fileID: 1445985897}
   ambience: {fileID: 1748078469}
 --- !u!1 &270287642

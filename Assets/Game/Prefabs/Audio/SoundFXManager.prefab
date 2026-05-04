@@ -136,7 +136,7 @@ MonoBehaviour:
     minDistance: 0
     maxDistance: 0
     spread: 0
-  - name: 'DefaultAmbience '
+  - name: CabinAmbience
     clip: {fileID: 8300000, guid: 660790bb19a97eb4581a05d90c81f369, type: 3}
     source: {fileID: 0}
     mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
@@ -192,7 +192,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: b3e352e8585b26045ba59942563c5e30, type: 3}
     source: {fileID: 0}
     mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
-    volume: 0.02
+    volume: 0.07
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
@@ -200,4 +200,17 @@ MonoBehaviour:
     spatialize: 1
     minDistance: 5
     maxDistance: 25
+    spread: 180
+  - name: Fire
+    clip: {fileID: 8300000, guid: f5b671c669286ae47af8003aab048d8d, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 2230225926986329597, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 1
+    volumeVariance: 1
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    spatialize: 1
+    minDistance: 10
+    maxDistance: 50
     spread: 180
