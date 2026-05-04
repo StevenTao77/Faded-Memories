@@ -1678,7 +1678,7 @@ MonoBehaviour:
   playerTorch: {fileID: 1677392594821255890}
   monsterTag: Monster
   fogChildObjectName: Volumetric Fog Volume
-  torchObjectName: torch
+  torchObjectName: Torch
   patrolRadius: 50
   patrolSpeed: 2
   waitTimeAtPoint: 2
@@ -3672,7 +3672,7 @@ GameObject:
   - component: {fileID: 5508580236482476385}
   m_Layer: 0
   m_Name: Torch
-  m_TagString: Untagged
+  m_TagString: Torchtool
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

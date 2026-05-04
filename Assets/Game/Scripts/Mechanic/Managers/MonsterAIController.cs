@@ -84,6 +84,8 @@ public class MonsterManager : MonoBehaviour
 
     private void Start()
     {
+       
+
         InitializeMonsterData();
     }
 
@@ -124,6 +126,25 @@ public class MonsterManager : MonoBehaviour
 
     private void Update()
     {
+        if (playerTransform == null || playerTorch == null)
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                playerTransform = player.transform;
+
+                Transform torchTransform = FindChildRecursively(player.transform, torchObjectName);
+
+                if (torchTransform != null)
+                {
+                    playerTorch = torchTransform.gameObject;
+                }
+                else
+                {
+                    Debug.LogWarning($"MonsterManager: Player found, but child named '{torchObjectName}' is missing. Torch detection will fail.");
+                }
+            }
+        }
         if (monsterAgent == null || playerTransform == null) return;
         if (!monsterAgent.isActiveAndEnabled || !monsterAgent.isOnNavMesh) return;
 
@@ -183,8 +204,7 @@ public class MonsterManager : MonoBehaviour
         monsterAgent.speed = fleeSpeed;
 
         fleeRecalculateTimer -= Time.deltaTime;
-
-        // Optimize performance: Only recalculate escape route every 0.5 seconds
+         
         if (fleeRecalculateTimer > 0f && monsterAgent.hasPath) return;
 
         fleeRecalculateTimer = 0.5f;
@@ -192,12 +212,11 @@ public class MonsterManager : MonoBehaviour
         Vector3 bestEscapePoint = monsterAgent.transform.position;
         float maxDistanceToPlayer = 0f;
         bool foundValidEscape = false;
-
-        // Sample 8 directions in a circle around the monster
+         
         for (int i = 0; i < 8; i++)
         {
             float angle = i * 45f;
-            // Get direction away from player, then rotate it by current angle
+           
             Vector3 baseDirAway = (monsterAgent.transform.position - playerTransform.position).normalized;
             Vector3 checkDirection = Quaternion.Euler(0, angle, 0) * baseDirAway;
 
@@ -209,17 +228,17 @@ public class MonsterManager : MonoBehaviour
                 float distToPlayerFromHit = Vector3.Distance(hit.position, playerTransform.position);
                 float currentDistToPlayer = Vector3.Distance(monsterAgent.transform.position, playerTransform.position);
 
-                // Make sure this new point is actually further away than where we stand now
+                 
                 if (distToPlayerFromHit > currentDistToPlayer)
                 {
-                    // CRITICAL FIX: Simulate the path to make sure it's not blocked by a wall
+                    
                     NavMeshPath path = new NavMeshPath();
                     if (monsterAgent.CalculatePath(hit.position, path))
                     {
-                        // PathComplete means we can physically walk there without getting stuck
+                       
                         if (path.status == NavMeshPathStatus.PathComplete)
                         {
-                            // Keep the point that gets us the FURTHEST away from the player
+                             
                             if (distToPlayerFromHit > maxDistanceToPlayer)
                             {
                                 maxDistanceToPlayer = distToPlayerFromHit;
@@ -237,8 +256,7 @@ public class MonsterManager : MonoBehaviour
             monsterAgent.SetDestination(bestEscapePoint);
         }
         else
-        {
-            // Extreme Fallback: If completely cornered by walls AND player, try to slip to the side
+        { 
             Vector3 slipPastPosition = monsterAgent.transform.position + (monsterAgent.transform.right * fleeDistance * 0.5f);
             NavMeshHit fallbackHit;
             if (NavMesh.SamplePosition(slipPastPosition, out fallbackHit, fleeDistance * 0.5f, NavMesh.AllAreas))
