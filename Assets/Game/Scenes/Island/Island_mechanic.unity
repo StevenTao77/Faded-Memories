@@ -388,12 +388,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472369416}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.27, y: 4.4, z: 1.58}
+  m_LocalRotation: {x: -0.000000089406925, y: -0, z: -0.0000001341104, w: 1}
+  m_LocalPosition: {x: -1.2700106, y: 4.400022, z: 1.5800084}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2669478036382219260}
+  m_Father: {fileID: 1039314233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &472369418
 MonoBehaviour:
@@ -799,6 +799,39 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e809a9016dd6e484d80e824dcac5e512, type: 3}
   m_PrefabInstance: {fileID: 808350148}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1039314232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1039314233}
+  m_Layer: 0
+  m_Name: Flame and Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1039314233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039314232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 657086096}
+  - {fileID: 472369417}
+  m_Father: {fileID: 2669478036382219260}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1100581259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1913,6 +1946,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gramps: {fileID: 5719517227283517575}
   hand: {fileID: 0}
+  hand2: {fileID: 0}
+  torchFlameAndLight: {fileID: 0}
 --- !u!1001 &1785421058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4780,8 +4815,7 @@ Transform:
   m_LocalScale: {x: 0.009999992, y: 0.009999995, z: 0.009999994}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 657086096}
-  - {fileID: 472369417}
+  - {fileID: 1039314233}
   m_Father: {fileID: 6219144336985879409}
   m_LocalEulerAnglesHint: {x: 250.67, y: -56.123993, z: 17.880005}
 --- !u!1 &2695376846534976743
@@ -6296,31 +6330,31 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2669478036382219260}
+    m_TransformParent: {fileID: 1039314233}
     m_Modifications:
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3.3333342
+      value: 3.3333344
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.3333328
+      value: 3.3333323
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3.333333
+      value: 3.3333325
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.4098355
+      value: -1.4098351
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.551399
+      value: 3.5513983
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.4103433
+      value: 1.4103451
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6332,11 +6366,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.031010736
+      value: 0.031010667
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.018455131
+      value: 0.018454995
       objectReference: {fileID: 0}
     - target: {fileID: 728576751314082672, guid: a87de24a72374624ba70a5ba746b9a1c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7710,6 +7744,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gramps: {fileID: 5719517227283517575}
   hand: {fileID: 8643927900710977259}
+  hand2: {fileID: 5316862748583709985}
+  torchFlameAndLight: {fileID: 1039314232}
 --- !u!4 &5557453694952277496
 Transform:
   m_ObjectHideFlags: 0

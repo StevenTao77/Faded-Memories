@@ -214,3 +214,16 @@ MonoBehaviour:
     minDistance: 10
     maxDistance: 50
     spread: 180
+  - name: FlamesIgnite
+    clip: {fileID: 8300000, guid: 0269e4a792e884a41a3f4a164d7aa17a, type: 3}
+    source: {fileID: 0}
+    mixerGroup: {fileID: 6247720340203659891, guid: e1e61e415c46d4c4aaca9cfa6394ee6f, type: 2}
+    volume: 0.5
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    spatialize: 0
+    minDistance: 0
+    maxDistance: 0
+    spread: 0

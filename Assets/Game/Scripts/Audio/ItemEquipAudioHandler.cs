@@ -1,32 +1,43 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class ItemEquipAudioHandler : MonoBehaviour
 {
     public GameObject gramps;
     public GameObject hand;
-    String gameObjectName;
-    
+    public GameObject hand2;
+    public GameObject torchFlameAndLight;
+
     private void OnEnable()
     {
-        String gameObjectName = gameObject.name;
         SoundFXManager.instance.PlayOneShot("Equip", gramps);
 
-        if (gameObjectName == "Torch")
+        if (gameObject.name == "Torch")
         {
-            SoundFXManager.instance.Fadein("Flames", 3, hand);
-            Debug.Log("Playing flames sound for " + gameObjectName);
+            StartCoroutine(PlayTorchSounds());
         }
     }
 
     private void OnDisable()
     {
-        String gameObjectName = gameObject.name;
         SoundFXManager.instance.PlayOneShot("Unequip", gramps);
 
-        if (gameObjectName == "Torch")
+        if (gameObject.name == "Torch")
         {
             SoundFXManager.instance.FadeOutAndStop("Flames", 1);
+            torchFlameAndLight.SetActive(false);
         }
+    }
+
+    private IEnumerator PlayTorchSounds()
+    {
+        SoundFXManager.instance.PlayOneShot("FlamesIgnite", hand);
+
+        yield return new WaitForSeconds(1f);
+
+        SoundFXManager.instance.PlayOneShot("Flames", hand2);
+        torchFlameAndLight.SetActive(true);
+        Debug.Log("Playing flames sound after delay");
     }
 }
