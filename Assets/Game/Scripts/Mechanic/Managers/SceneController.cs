@@ -34,5 +34,10 @@ public class SceneController : MonoBehaviour
             LoadScene(targetSceneIndexOnCollision);
         }
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
  
