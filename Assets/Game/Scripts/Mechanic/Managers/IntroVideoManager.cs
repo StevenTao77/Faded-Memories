@@ -24,24 +24,27 @@ public class IntroVideoManager : MonoBehaviour
     private bool isTransitioning = false;
 
     private void Start()
-    { 
+    {
+        // Ensure time scale is reset to 1 when returning to Main Menu
+        Time.timeScale = 1f;
+
         if (introVideoPlayer != null)
         {
             introVideoPlayer.loopPointReached += OnVideoEndReached;
         }
-         
+
         if (videoScreenUI != null)
         {
             videoCanvasGroup = videoScreenUI.GetComponent<CanvasGroup>();
             if (videoCanvasGroup == null)
             {
                 videoCanvasGroup = videoScreenUI.AddComponent<CanvasGroup>();
-            } 
+            }
 
             videoCanvasGroup.alpha = 1f;
             videoScreenUI.SetActive(false);
         }
-         
+
         if (blackScreenCanvasGroup != null)
         {
             blackScreenCanvasGroup.alpha = 0f;
@@ -51,19 +54,17 @@ public class IntroVideoManager : MonoBehaviour
 
     private void Update()
     {
-        // Listen for skip key only when video is active  
         if (isVideoActive && !isTransitioning && Input.GetKeyDown(KeyCode.Q))
         {
             SkipVideo();
         }
     }
-     
+
     public void PlayIntroVideo()
     {
         if (introVideoPlayer != null && videoScreenUI != null && !isVideoActive && !isTransitioning)
         {
             StartCoroutine(CinematicPlaySequence());
-             
         }
     }
 
@@ -72,24 +73,38 @@ public class IntroVideoManager : MonoBehaviour
         isTransitioning = true;
         isVideoActive = true;
 
-        //Fade the black screen IN to cover the menu
         if (blackScreenCanvasGroup != null)
         {
             blackScreenCanvasGroup.gameObject.SetActive(true);
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 0f, 1f, fadeToBlackDuration));
         }
 
-        //Prepare the video behind the black screen to avoid stuttering
         videoScreenUI.SetActive(true);
+
+        // Yield one frame before preparing to avoid initialization race conditions
+        yield return null;
         introVideoPlayer.Prepare();
 
-        while (!introVideoPlayer.isPrepared)
+        // Added a timeout fail-safe so it never gets permanently stuck
+        float prepareTimeout = 5f;
+        float timer = 0f;
+        while (!introVideoPlayer.isPrepared && timer < prepareTimeout)
         {
+            timer += Time.unscaledDeltaTime;
             yield return null;
         }
 
-        introVideoPlayer.Play();
-         
+        if (introVideoPlayer.isPrepared)
+        {
+            introVideoPlayer.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Video failed to prepare. Skipping to next scene.");
+            SkipVideo();
+            yield break;
+        }
+
         if (blackScreenCanvasGroup != null)
         {
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 1f, 0f, fadeFromBlackDuration));
@@ -107,23 +122,27 @@ public class IntroVideoManager : MonoBehaviour
         }
     }
 
-    // Handles both skipping and natural ending with a smooth fade to black
     private IEnumerator CinematicEndSequence()
     {
         isTransitioning = true;
 
-        SoundFXManager.instance.FadeOutAndStop("PianoBackground", fadeToBlackDuration);
-        SoundFXManager.instance.FadeOutAndStop("NightSoundsWater", fadeToBlackDuration);
+        // Ensure SoundFXManager exists before calling it to prevent NullReferenceExceptions
+        if (SoundFXManager.instance != null)
+        {
+            SoundFXManager.instance.FadeOutAndStop("PianoBackground", fadeToBlackDuration);
+            SoundFXManager.instance.FadeOutAndStop("NightSoundsWater", fadeToBlackDuration);
+        }
 
         if (blackScreenCanvasGroup != null)
         {
             blackScreenCanvasGroup.gameObject.SetActive(true);
             yield return StartCoroutine(FadeCanvasGroup(blackScreenCanvasGroup, 0f, 1f, skipFadeOutDuration));
         }
-         
+
         if (introVideoPlayer != null)
         {
-            introVideoPlayer.Pause();
+            // Changed from Pause() to Stop() to release hardware resources
+            introVideoPlayer.Stop();
         }
 
         FinishVideoSequence();
@@ -136,7 +155,6 @@ public class IntroVideoManager : MonoBehaviour
         isVideoActive = false;
         isTransitioning = false;
 
-       
         onVideoFinished?.Invoke();
     }
 
@@ -148,7 +166,6 @@ public class IntroVideoManager : MonoBehaviour
         }
     }
 
-     
     private IEnumerator FadeCanvasGroup(CanvasGroup cg, float startAlpha, float endAlpha, float duration)
     {
         float elapsedTime = 0f;
@@ -156,7 +173,8 @@ public class IntroVideoManager : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            elapsedTime += Time.deltaTime;
+            // Changed to unscaledDeltaTime so fades work even if timeScale is 0
+            elapsedTime += Time.unscaledDeltaTime;
             cg.alpha = Mathf.Clamp01(Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration));
             yield return null;
         }
@@ -169,6 +187,8 @@ public class IntroVideoManager : MonoBehaviour
         if (introVideoPlayer != null)
         {
             introVideoPlayer.loopPointReached -= OnVideoEndReached;
+            // Ensure video player is explicitly stopped when scene is destroyed
+            introVideoPlayer.Stop();
         }
     }
 }
